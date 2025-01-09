@@ -1,6 +1,6 @@
 # ProyectoIntermodularEquipoA2
 
-### Los participantes que forman el Equipo 3 son:
+### Los participantes que forman el Equipo A2 son:
 
 * Raúl Casas Gómez
 * Francisco Sitjar de Cos-Estrada
