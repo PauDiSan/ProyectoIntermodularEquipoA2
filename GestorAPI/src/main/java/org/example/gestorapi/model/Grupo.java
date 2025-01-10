@@ -36,6 +36,7 @@ public class Grupo {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tutor_id", nullable = false)
+  
     private Profesor tutor;
 
     @OneToMany(mappedBy = "grupo")

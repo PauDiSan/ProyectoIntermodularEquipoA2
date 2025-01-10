@@ -19,6 +19,7 @@ public class ProfResponsable {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profesor_id", nullable = false)
+
     private Profesor profesor;
 
     public Integer getId() {

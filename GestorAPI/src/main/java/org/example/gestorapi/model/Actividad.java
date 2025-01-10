@@ -287,6 +287,7 @@ public class Actividad {
         this.fotos = fotos;
     }
 
+
     public Set<GrupoParticipante> getGruposParticipantes() {
         return gruposParticipantes;
     }
