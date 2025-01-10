@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "profesores")
-public class Profesore {
+public class Profesor {
     @Id
     @Size(max = 36)
     @Column(name = "uuid", nullable = false, length = 36)

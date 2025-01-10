@@ -36,10 +36,10 @@ public class Grupo {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tutor_id", nullable = false)
-    private Profesore tutor;
+    private Profesor tutor;
 
     @OneToMany(mappedBy = "grupo")
-    private Set<GruposParticipante> gruposParticipantes = new LinkedHashSet<>();
+    private Set<GrupoParticipante> gruposParticipantes = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -81,19 +81,19 @@ public class Grupo {
         this.activo = activo;
     }
 
-    public Profesore getTutor() {
+    public Profesor getTutor() {
         return tutor;
     }
 
-    public void setTutor(Profesore tutor) {
+    public void setTutor(Profesor tutor) {
         this.tutor = tutor;
     }
 
-    public Set<GruposParticipante> getGruposParticipantes() {
+    public Set<GrupoParticipante> getGruposParticipantes() {
         return gruposParticipantes;
     }
 
-    public void setGruposParticipantes(Set<GruposParticipante> gruposParticipantes) {
+    public void setGruposParticipantes(Set<GrupoParticipante> gruposParticipantes) {
         this.gruposParticipantes = gruposParticipantes;
     }
 

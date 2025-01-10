@@ -22,7 +22,7 @@ public class ProfParticipante {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "profesor_id", nullable = false)
-    private Profesore profesor;
+    private Profesor profesor;
 
     public Integer getId() {
         return id;
@@ -40,11 +40,11 @@ public class ProfParticipante {
         this.actividad = actividad;
     }
 
-    public Profesore getProfesor() {
+    public Profesor getProfesor() {
         return profesor;
     }
 
-    public void setProfesor(Profesore profesor) {
+    public void setProfesor(Profesor profesor) {
         this.profesor = profesor;
     }
 

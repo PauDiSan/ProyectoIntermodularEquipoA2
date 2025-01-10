@@ -6,7 +6,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "grupos_participantes")
-public class GruposParticipante {
+public class GrupoParticipante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
