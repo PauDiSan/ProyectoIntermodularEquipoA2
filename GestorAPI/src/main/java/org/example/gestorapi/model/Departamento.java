@@ -26,7 +26,7 @@ public class Departamento {
     private String nombre;
 
     @OneToMany(mappedBy = "depart")
-    private Set<Profesore> profesores = new LinkedHashSet<>();
+    private Set<Profesor> profesores = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -52,11 +52,11 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    public Set<Profesore> getProfesores() {
+    public Set<Profesor> getProfesores() {
         return profesores;
     }
 
-    public void setProfesores(Set<Profesore> profesores) {
+    public void setProfesores(Set<Profesor> profesores) {
         this.profesores = profesores;
     }
 
