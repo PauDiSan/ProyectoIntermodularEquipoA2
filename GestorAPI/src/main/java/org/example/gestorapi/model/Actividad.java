@@ -49,11 +49,11 @@ public class Actividad {
 
     @NotNull
     @Column(name = "prevista_ini", nullable = false)
-    private Byte previstaIni;
+    private boolean previstaIni;
 
     @NotNull
     @Column(name = "transporte_req", nullable = false)
-    private Byte transporteReq;
+    private boolean transporteReq;
 
     @Lob
     @Column(name = "coment_transporte")
@@ -61,7 +61,7 @@ public class Actividad {
 
     @NotNull
     @Column(name = "alojamiento_req", nullable = false)
-    private Byte alojamientoReq;
+    private boolean alojamientoReq;
 
     @Lob
     @Column(name = "coment_alojamiento")
@@ -89,7 +89,7 @@ public class Actividad {
     private String urlFolleto;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "solicitante_id", nullable = false)
     private Profesor solicitante;
 
@@ -175,19 +175,19 @@ public class Actividad {
         this.hfin = hfin;
     }
 
-    public Byte getPrevistaIni() {
+    public boolean getPrevistaIni() {
         return previstaIni;
     }
 
-    public void setPrevistaIni(Byte previstaIni) {
+    public void setPrevistaIni(boolean previstaIni) {
         this.previstaIni = previstaIni;
     }
 
-    public Byte getTransporteReq() {
+    public boolean getTransporteReq() {
         return transporteReq;
     }
 
-    public void setTransporteReq(Byte transporteReq) {
+    public void setTransporteReq(boolean transporteReq) {
         this.transporteReq = transporteReq;
     }
 
@@ -199,11 +199,11 @@ public class Actividad {
         this.comentTransporte = comentTransporte;
     }
 
-    public Byte getAlojamientoReq() {
+    public boolean getAlojamientoReq() {
         return alojamientoReq;
     }
 
-    public void setAlojamientoReq(Byte alojamientoReq) {
+    public void setAlojamientoReq(boolean alojamientoReq) {
         this.alojamientoReq = alojamientoReq;
     }
 

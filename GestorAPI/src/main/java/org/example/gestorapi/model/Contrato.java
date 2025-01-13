@@ -14,18 +14,18 @@ public class Contrato {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "actividad_id", nullable = false)
     private Actividad actividad;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "emp_transporte_id", nullable = false)
     private EmpTransporte empTransporte;
 
     @NotNull
     @Column(name = "contratada", nullable = false)
-    private Byte contratada;
+    private boolean contratada;
 
     @NotNull
     @Column(name = "importe", nullable = false, precision = 6, scale = 2)
@@ -63,11 +63,11 @@ public class Contrato {
         this.empTransporte = empTransporte;
     }
 
-    public Byte getContratada() {
+    public boolean getContratada() {
         return contratada;
     }
 
-    public void setContratada(Byte contratada) {
+    public void setContratada(boolean contratada) {
         this.contratada = contratada;
     }
 
