@@ -26,6 +26,7 @@ public class Departamento {
     private String nombre;
 
 
+
     public Integer getId() {
         return id;
     }
@@ -49,6 +50,5 @@ public class Departamento {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
 
 }

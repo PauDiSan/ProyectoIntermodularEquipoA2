@@ -91,7 +91,7 @@ public class Actividad {
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "solicitante_id", nullable = false)
-    private Profesore solicitante;
+    private Profesor solicitante;
 
     @Column(name = "importe_por_alumno", precision = 5, scale = 2)
     private BigDecimal importePorAlumno;
@@ -103,7 +103,7 @@ public class Actividad {
     private Set<Foto> fotos = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "actividades")
-    private Set<GruposParticipante> gruposParticipantes = new LinkedHashSet<>();
+    private Set<GrupoParticipante> gruposParticipantes = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "actividad")
     private Set<ProfParticipante> profParticipantes = new LinkedHashSet<>();
@@ -255,11 +255,11 @@ public class Actividad {
         this.urlFolleto = urlFolleto;
     }
 
-    public Profesore getSolicitante() {
+    public Profesor getSolicitante() {
         return solicitante;
     }
 
-    public void setSolicitante(Profesore solicitante) {
+    public void setSolicitante(Profesor solicitante) {
         this.solicitante = solicitante;
     }
 
@@ -287,11 +287,12 @@ public class Actividad {
         this.fotos = fotos;
     }
 
-    public Set<GruposParticipante> getGruposParticipantes() {
+
+    public Set<GrupoParticipante> getGruposParticipantes() {
         return gruposParticipantes;
     }
 
-    public void setGruposParticipantes(Set<GruposParticipante> gruposParticipantes) {
+    public void setGruposParticipantes(Set<GrupoParticipante> gruposParticipantes) {
         this.gruposParticipantes = gruposParticipantes;
     }
 

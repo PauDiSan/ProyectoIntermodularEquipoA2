@@ -52,16 +52,21 @@ public class Profesor {
     @Column(name = "activo", nullable = false)
     private boolean activo;
 
+
     @Lob
     @Column(name = "url_foto")
     private String urlFoto;
 
     @ColumnDefault("0")
     @Column(name = "es_jefe_dep")
+
     private boolean esJefeDep;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+
+
+    
     @JoinColumn(name = "depart_id", nullable = false)
     private Departamento depart;
 
@@ -133,11 +138,13 @@ public class Profesor {
         this.rol = rol;
     }
 
+
     public boolean getActivo() {
         return activo;
     }
 
     public void setActivo(boolean activo) {
+
         this.activo = activo;
     }
 
@@ -149,11 +156,13 @@ public class Profesor {
         this.urlFoto = urlFoto;
     }
 
+
     public boolean getEsJefeDep() {
         return esJefeDep;
     }
 
     public void setEsJefeDep(boolean esJefeDep) {
+
         this.esJefeDep = esJefeDep;
     }
 
