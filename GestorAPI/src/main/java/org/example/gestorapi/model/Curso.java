@@ -36,10 +36,7 @@ public class Curso {
 
     @NotNull
     @Column(name = "activo", nullable = false)
-    private Byte activo;
-
-    @OneToMany(mappedBy = "curso")
-    private Set<Grupo> grupos = new LinkedHashSet<>();
+    private boolean activo;
 
     public Integer getId() {
         return id;
@@ -81,20 +78,14 @@ public class Curso {
         this.nivel = nivel;
     }
 
-    public Byte getActivo() {
+    public boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(boolean activo) {
         this.activo = activo;
     }
 
-    public Set<Grupo> getGrupos() {
-        return grupos;
-    }
 
-    public void setGrupos(Set<Grupo> grupos) {
-        this.grupos = grupos;
-    }
 
 }

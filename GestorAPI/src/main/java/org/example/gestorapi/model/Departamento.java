@@ -25,8 +25,11 @@ public class Departamento {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
+<<<<<<< Updated upstream
     @OneToMany(mappedBy = "depart")
     private Set<Profesore> profesores = new LinkedHashSet<>();
+=======
+>>>>>>> Stashed changes
 
     public Integer getId() {
         return id;
@@ -52,6 +55,7 @@ public class Departamento {
         this.nombre = nombre;
     }
 
+<<<<<<< Updated upstream
     public Set<Profesore> getProfesores() {
         return profesores;
     }
@@ -59,5 +63,7 @@ public class Departamento {
     public void setProfesores(Set<Profesore> profesores) {
         this.profesores = profesores;
     }
+=======
+>>>>>>> Stashed changes
 
 }

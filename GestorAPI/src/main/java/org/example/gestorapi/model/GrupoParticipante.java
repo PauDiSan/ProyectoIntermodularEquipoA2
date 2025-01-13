@@ -6,19 +6,19 @@ import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Table(name = "grupos_participantes")
-public class GruposParticipante {
+public class GrupoParticipante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "actividades_id", nullable = false)
     private Actividad actividades;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "grupo_id", nullable = false)
     private Grupo grupo;
 

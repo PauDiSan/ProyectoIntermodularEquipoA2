@@ -16,7 +16,7 @@ public class Grupo {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
@@ -31,10 +31,10 @@ public class Grupo {
 
     @NotNull
     @Column(name = "activo", nullable = false)
-    private Byte activo;
+    private boolean activo;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tutor_id", nullable = false)
     private Profesore tutor;
 
@@ -73,11 +73,11 @@ public class Grupo {
         this.numAlumnos = numAlumnos;
     }
 
-    public Byte getActivo() {
+    public boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(boolean activo) {
         this.activo = activo;
     }
 

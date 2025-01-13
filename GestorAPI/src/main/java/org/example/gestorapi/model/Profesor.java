@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "profesores")
-public class Profesore {
+public class Profesor {
     @Id
     @Size(max = 36)
     @Column(name = "uuid", nullable = false, length = 36)
@@ -50,7 +50,7 @@ public class Profesore {
     @NotNull
     @ColumnDefault("1")
     @Column(name = "activo", nullable = false)
-    private Byte activo;
+    private boolean activo;
 
     @Lob
     @Column(name = "url_foto")
@@ -58,10 +58,10 @@ public class Profesore {
 
     @ColumnDefault("0")
     @Column(name = "es_jefe_dep")
-    private Byte esJefeDep;
+    private boolean esJefeDep;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "depart_id", nullable = false)
     private Departamento depart;
 
@@ -133,11 +133,11 @@ public class Profesore {
         this.rol = rol;
     }
 
-    public Byte getActivo() {
+    public boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(boolean activo) {
         this.activo = activo;
     }
 
@@ -149,11 +149,11 @@ public class Profesore {
         this.urlFoto = urlFoto;
     }
 
-    public Byte getEsJefeDep() {
+    public boolean getEsJefeDep() {
         return esJefeDep;
     }
 
-    public void setEsJefeDep(Byte esJefeDep) {
+    public void setEsJefeDep(boolean esJefeDep) {
         this.esJefeDep = esJefeDep;
     }
 
