@@ -67,6 +67,7 @@ public class Grupo {
         this.numAlumnos = numAlumnos;
     }
 
+
     public Boolean getActivo() {
         return activo;
     }

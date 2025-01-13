@@ -118,6 +118,7 @@ public class Profesor {
         this.rol = rol;
     }
 
+
     public Boolean getActivo() {
         return activo;
     }

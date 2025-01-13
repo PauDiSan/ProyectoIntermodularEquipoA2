@@ -47,6 +47,7 @@ public class Actividad {
 
     @NotNull
     @Column(name = "prevista_ini", nullable = false)
+
     private Boolean previstaIni = false;
 
     @NotNull
@@ -157,6 +158,7 @@ public class Actividad {
     public void setHfin(LocalTime hfin) {
         this.hfin = hfin;
     }
+
 
     public Boolean getPrevistaIni() {
         return previstaIni;

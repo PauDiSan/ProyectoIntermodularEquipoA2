@@ -35,6 +35,7 @@ public class Curso {
     @Column(name = "activo", nullable = false)
     private Boolean activo = false;
 
+
     public Integer getId() {
         return id;
     }
@@ -82,5 +83,4 @@ public class Curso {
     public void setActivo(Boolean activo) {
         this.activo = activo;
     }
-
 }
