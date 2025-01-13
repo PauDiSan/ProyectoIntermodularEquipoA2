@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "grupos")
 public class Grupo {
@@ -16,7 +13,7 @@ public class Grupo {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "curso_id", nullable = false)
     private Curso curso;
 
@@ -31,16 +28,12 @@ public class Grupo {
 
     @NotNull
     @Column(name = "activo", nullable = false)
-    private Byte activo;
+    private Boolean activo = false;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "tutor_id", nullable = false)
-  
     private Profesor tutor;
-
-    @OneToMany(mappedBy = "grupo")
-    private Set<GrupoParticipante> gruposParticipantes = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -74,11 +67,11 @@ public class Grupo {
         this.numAlumnos = numAlumnos;
     }
 
-    public Byte getActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
 
@@ -88,14 +81,6 @@ public class Grupo {
 
     public void setTutor(Profesor tutor) {
         this.tutor = tutor;
-    }
-
-    public Set<GrupoParticipante> getGruposParticipantes() {
-        return gruposParticipantes;
-    }
-
-    public void setGruposParticipantes(Set<GrupoParticipante> gruposParticipantes) {
-        this.gruposParticipantes = gruposParticipantes;
     }
 
 }

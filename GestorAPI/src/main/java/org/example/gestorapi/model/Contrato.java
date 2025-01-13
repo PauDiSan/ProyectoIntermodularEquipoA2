@@ -14,7 +14,7 @@ public class Contrato {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "actividad_id", nullable = false)
     private Actividad actividad;
 
@@ -25,7 +25,7 @@ public class Contrato {
 
     @NotNull
     @Column(name = "contratada", nullable = false)
-    private Byte contratada;
+    private Boolean contratada = false;
 
     @NotNull
     @Column(name = "importe", nullable = false, precision = 6, scale = 2)
@@ -63,11 +63,11 @@ public class Contrato {
         this.empTransporte = empTransporte;
     }
 
-    public Byte getContratada() {
+    public Boolean getContratada() {
         return contratada;
     }
 
-    public void setContratada(Byte contratada) {
+    public void setContratada(Boolean contratada) {
         this.contratada = contratada;
     }
 

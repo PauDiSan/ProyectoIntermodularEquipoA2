@@ -14,15 +14,14 @@ public class ProfParticipante {
     private Integer id;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "actividad_id", nullable = false)
     private Actividad actividad;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "profesor_id", nullable = false)
-  
     private Profesor profesor;
 
     public Integer getId() {
@@ -40,6 +39,7 @@ public class ProfParticipante {
     public void setActividad(Actividad actividad) {
         this.actividad = actividad;
     }
+
     public Profesor getProfesor() {
         return profesor;
     }

@@ -6,8 +6,6 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "actividades")
@@ -49,11 +47,11 @@ public class Actividad {
 
     @NotNull
     @Column(name = "prevista_ini", nullable = false)
-    private Byte previstaIni;
+    private Boolean previstaIni = false;
 
     @NotNull
     @Column(name = "transporte_req", nullable = false)
-    private Byte transporteReq;
+    private Boolean transporteReq = false;
 
     @Lob
     @Column(name = "coment_transporte")
@@ -61,7 +59,7 @@ public class Actividad {
 
     @NotNull
     @Column(name = "alojamiento_req", nullable = false)
-    private Byte alojamientoReq;
+    private Boolean alojamientoReq = false;
 
     @Lob
     @Column(name = "coment_alojamiento")
@@ -89,27 +87,12 @@ public class Actividad {
     private String urlFolleto;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "solicitante_id", nullable = false)
     private Profesor solicitante;
 
     @Column(name = "importe_por_alumno", precision = 5, scale = 2)
     private BigDecimal importePorAlumno;
-
-    @OneToMany(mappedBy = "actividad")
-    private Set<Contrato> contratos = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "actividad")
-    private Set<Foto> fotos = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "actividades")
-    private Set<GrupoParticipante> gruposParticipantes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "actividad")
-    private Set<ProfParticipante> profParticipantes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "actividad")
-    private Set<ProfResponsable> profResponsables = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -175,19 +158,19 @@ public class Actividad {
         this.hfin = hfin;
     }
 
-    public Byte getPrevistaIni() {
+    public Boolean getPrevistaIni() {
         return previstaIni;
     }
 
-    public void setPrevistaIni(Byte previstaIni) {
+    public void setPrevistaIni(Boolean previstaIni) {
         this.previstaIni = previstaIni;
     }
 
-    public Byte getTransporteReq() {
+    public Boolean getTransporteReq() {
         return transporteReq;
     }
 
-    public void setTransporteReq(Byte transporteReq) {
+    public void setTransporteReq(Boolean transporteReq) {
         this.transporteReq = transporteReq;
     }
 
@@ -199,11 +182,11 @@ public class Actividad {
         this.comentTransporte = comentTransporte;
     }
 
-    public Byte getAlojamientoReq() {
+    public Boolean getAlojamientoReq() {
         return alojamientoReq;
     }
 
-    public void setAlojamientoReq(Byte alojamientoReq) {
+    public void setAlojamientoReq(Boolean alojamientoReq) {
         this.alojamientoReq = alojamientoReq;
     }
 
@@ -269,47 +252,6 @@ public class Actividad {
 
     public void setImportePorAlumno(BigDecimal importePorAlumno) {
         this.importePorAlumno = importePorAlumno;
-    }
-
-    public Set<Contrato> getContratos() {
-        return contratos;
-    }
-
-    public void setContratos(Set<Contrato> contratos) {
-        this.contratos = contratos;
-    }
-
-    public Set<Foto> getFotos() {
-        return fotos;
-    }
-
-    public void setFotos(Set<Foto> fotos) {
-        this.fotos = fotos;
-    }
-
-
-    public Set<GrupoParticipante> getGruposParticipantes() {
-        return gruposParticipantes;
-    }
-
-    public void setGruposParticipantes(Set<GrupoParticipante> gruposParticipantes) {
-        this.gruposParticipantes = gruposParticipantes;
-    }
-
-    public Set<ProfParticipante> getProfParticipantes() {
-        return profParticipantes;
-    }
-
-    public void setProfParticipantes(Set<ProfParticipante> profParticipantes) {
-        this.profParticipantes = profParticipantes;
-    }
-
-    public Set<ProfResponsable> getProfResponsables() {
-        return profResponsables;
-    }
-
-    public void setProfResponsables(Set<ProfResponsable> profResponsables) {
-        this.profResponsables = profResponsables;
     }
 
 }

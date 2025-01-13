@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "departamentos")
 public class Departamento {
@@ -24,7 +21,6 @@ public class Departamento {
     @NotNull
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
-
 
     public Integer getId() {
         return id;
@@ -49,6 +45,5 @@ public class Departamento {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
 
 }

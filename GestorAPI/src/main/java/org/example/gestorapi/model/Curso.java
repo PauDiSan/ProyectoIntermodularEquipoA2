@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "cursos")
 public class Curso {
@@ -36,10 +33,7 @@ public class Curso {
 
     @NotNull
     @Column(name = "activo", nullable = false)
-    private Byte activo;
-
-    @OneToMany(mappedBy = "curso")
-    private Set<Grupo> grupos = new LinkedHashSet<>();
+    private Boolean activo = false;
 
     public Integer getId() {
         return id;
@@ -81,20 +75,12 @@ public class Curso {
         this.nivel = nivel;
     }
 
-    public Byte getActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
-    }
-
-    public Set<Grupo> getGrupos() {
-        return grupos;
-    }
-
-    public void setGrupos(Set<Grupo> grupos) {
-        this.grupos = grupos;
     }
 
 }
