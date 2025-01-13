@@ -33,6 +33,8 @@ public class Departamento {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
     public Integer getId() {
         return id;
