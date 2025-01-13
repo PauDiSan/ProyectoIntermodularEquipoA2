@@ -30,6 +30,7 @@ public class Departamento {
     private Set<Profesore> profesores = new LinkedHashSet<>();
 =======
 >>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
     public Integer getId() {
         return id;
@@ -64,6 +65,7 @@ public class Departamento {
         this.profesores = profesores;
     }
 =======
+>>>>>>> Stashed changes
 >>>>>>> Stashed changes
 
 }
