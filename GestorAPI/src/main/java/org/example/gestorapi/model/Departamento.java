@@ -25,8 +25,6 @@ public class Departamento {
     @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
 
-    @OneToMany(mappedBy = "depart")
-    private Set<Profesor> profesores = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -52,12 +50,5 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    public Set<Profesor> getProfesores() {
-        return profesores;
-    }
-
-    public void setProfesores(Set<Profesor> profesores) {
-        this.profesores = profesores;
-    }
 
 }

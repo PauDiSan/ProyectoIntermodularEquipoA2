@@ -50,7 +50,7 @@ public class Profesor {
     @NotNull
     @ColumnDefault("1")
     @Column(name = "activo", nullable = false)
-    private Byte activo;
+    private Boolean activo;
 
     @Lob
     @Column(name = "url_foto")
@@ -58,7 +58,7 @@ public class Profesor {
 
     @ColumnDefault("0")
     @Column(name = "es_jefe_dep")
-    private Byte esJefeDep;
+    private Boolean esJefeDep;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -133,11 +133,11 @@ public class Profesor {
         this.rol = rol;
     }
 
-    public Byte getActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(Byte activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
 
@@ -149,11 +149,11 @@ public class Profesor {
         this.urlFoto = urlFoto;
     }
 
-    public Byte getEsJefeDep() {
+    public Boolean getEsJefeDep() {
         return esJefeDep;
     }
 
-    public void setEsJefeDep(Byte esJefeDep) {
+    public void setEsJefeDep(Boolean esJefeDep) {
         this.esJefeDep = esJefeDep;
     }
 
