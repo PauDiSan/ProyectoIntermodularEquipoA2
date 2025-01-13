@@ -5,9 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "profesores")
 public class Profesor {
@@ -50,8 +47,7 @@ public class Profesor {
     @NotNull
     @ColumnDefault("1")
     @Column(name = "activo", nullable = false)
-    private boolean activo;
-
+    private Boolean activo = false;
 
     @Lob
     @Column(name = "url_foto")
@@ -59,28 +55,12 @@ public class Profesor {
 
     @ColumnDefault("0")
     @Column(name = "es_jefe_dep")
-
-    private boolean esJefeDep;
+    private Boolean esJefeDep;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
-
-
-    
     @JoinColumn(name = "depart_id", nullable = false)
     private Departamento depart;
-
-    @OneToMany(mappedBy = "solicitante")
-    private Set<Actividad> actividades = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "tutor")
-    private Set<Grupo> grupos = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "profesor")
-    private Set<ProfParticipante> profParticipantes = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "profesor")
-    private Set<ProfResponsable> profResponsables = new LinkedHashSet<>();
 
     public String getUuid() {
         return uuid;
@@ -139,12 +119,11 @@ public class Profesor {
     }
 
 
-    public boolean getActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(boolean activo) {
-
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
 
@@ -156,13 +135,11 @@ public class Profesor {
         this.urlFoto = urlFoto;
     }
 
-
-    public boolean getEsJefeDep() {
+    public Boolean getEsJefeDep() {
         return esJefeDep;
     }
 
-    public void setEsJefeDep(boolean esJefeDep) {
-
+    public void setEsJefeDep(Boolean esJefeDep) {
         this.esJefeDep = esJefeDep;
     }
 
@@ -172,38 +149,6 @@ public class Profesor {
 
     public void setDepart(Departamento depart) {
         this.depart = depart;
-    }
-
-    public Set<Actividad> getActividades() {
-        return actividades;
-    }
-
-    public void setActividades(Set<Actividad> actividades) {
-        this.actividades = actividades;
-    }
-
-    public Set<Grupo> getGrupos() {
-        return grupos;
-    }
-
-    public void setGrupos(Set<Grupo> grupos) {
-        this.grupos = grupos;
-    }
-
-    public Set<ProfParticipante> getProfParticipantes() {
-        return profParticipantes;
-    }
-
-    public void setProfParticipantes(Set<ProfParticipante> profParticipantes) {
-        this.profParticipantes = profParticipantes;
-    }
-
-    public Set<ProfResponsable> getProfResponsables() {
-        return profResponsables;
-    }
-
-    public void setProfResponsables(Set<ProfResponsable> profResponsables) {
-        this.profResponsables = profResponsables;
     }
 
 }

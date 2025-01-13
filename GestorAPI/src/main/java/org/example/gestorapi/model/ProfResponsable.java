@@ -19,7 +19,6 @@ public class ProfResponsable {
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "profesor_id", nullable = false)
-
     private Profesor profesor;
 
     public Integer getId() {

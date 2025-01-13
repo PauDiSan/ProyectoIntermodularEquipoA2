@@ -25,7 +25,7 @@ public class Contrato {
 
     @NotNull
     @Column(name = "contratada", nullable = false)
-    private boolean contratada;
+    private Boolean contratada = false;
 
     @NotNull
     @Column(name = "importe", nullable = false, precision = 6, scale = 2)
@@ -63,11 +63,11 @@ public class Contrato {
         this.empTransporte = empTransporte;
     }
 
-    public boolean getContratada() {
+    public Boolean getContratada() {
         return contratada;
     }
 
-    public void setContratada(boolean contratada) {
+    public void setContratada(Boolean contratada) {
         this.contratada = contratada;
     }
 

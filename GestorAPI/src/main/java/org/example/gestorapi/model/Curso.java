@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "cursos")
 public class Curso {
@@ -36,7 +33,8 @@ public class Curso {
 
     @NotNull
     @Column(name = "activo", nullable = false)
-    private boolean activo;
+    private Boolean activo = false;
+
 
     public Integer getId() {
         return id;
@@ -78,14 +76,11 @@ public class Curso {
         this.nivel = nivel;
     }
 
-    public boolean getActivo() {
+    public Boolean getActivo() {
         return activo;
     }
 
-    public void setActivo(boolean activo) {
+    public void setActivo(Boolean activo) {
         this.activo = activo;
     }
-
-
-
 }

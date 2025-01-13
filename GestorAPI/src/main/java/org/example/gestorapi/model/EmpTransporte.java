@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
 @Table(name = "emp_transporte")
 public class EmpTransporte {
@@ -40,9 +37,6 @@ public class EmpTransporte {
     @Lob
     @Column(name = "contacto")
     private String contacto;
-
-    @OneToMany(mappedBy = "empTransporte")
-    private Set<Contrato> contratos = new LinkedHashSet<>();
 
     public Integer getId() {
         return id;
@@ -98,14 +92,6 @@ public class EmpTransporte {
 
     public void setContacto(String contacto) {
         this.contacto = contacto;
-    }
-
-    public Set<Contrato> getContratos() {
-        return contratos;
-    }
-
-    public void setContratos(Set<Contrato> contratos) {
-        this.contratos = contratos;
     }
 
 }
