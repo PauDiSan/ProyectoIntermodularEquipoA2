@@ -5,5 +5,6 @@
 * Raúl Casas Gómez
 * Francisco Sitjar de Cos-Estrada
 * Paula Díaz Santos
+* Raúl Buenaga
 
 http://localhost:8080/swagger-ui/index.html
