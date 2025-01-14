@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfesorRepository extends JpaRepository<Profesor, String> {
+    Profesor findByCorreoAndPassword(String correo, String password);
+    Profesor findByCorreo(String correo);
+    Boolean existsByCorreo(String correo);
 }

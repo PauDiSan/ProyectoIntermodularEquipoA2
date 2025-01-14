@@ -27,9 +27,9 @@ public class ProfesorController {
         }
     }
 
-    @GetMapping("/profesores/{id}")
-    public ResponseEntity<?> getProfesorById(@PathVariable String id) {
-        Profesor profesor = profesorService.findByUuid(id);
+    @GetMapping("/profesores/{correo}")
+    public ResponseEntity<?> getProfesorById(@PathVariable String correo) {
+        Profesor profesor = profesorService.findByEmail(correo);
         if (profesor == null) {
             return ResponseEntity.notFound().build();
         }else{
@@ -49,7 +49,7 @@ public class ProfesorController {
 
     @PutMapping("/profesores/{id}")
     public ResponseEntity<?> updateProfesor(@PathVariable String id, @RequestBody Profesor profesor) {
-        Profesor actualizado = profesorService.findByUuid(id);
+        Profesor actualizado = profesorService.findById(id);
         if (actualizado == null) {
             return ResponseEntity.notFound().build();
         }else{
@@ -59,11 +59,21 @@ public class ProfesorController {
 
     @DeleteMapping("/profesores/{id}")
     public ResponseEntity<Profesor> deleteProfesor(@PathVariable String id) {
-        Profesor eliminado = profesorService.findByUuid(id);
+        Profesor eliminado = profesorService.findById(id);
         if (eliminado == null) {
             return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.ok(profesorService.eliminar(id));
+        }
+    }
+
+    @GetMapping("/profesores/inicio")
+    public ResponseEntity<?> inicioSesion(@RequestParam String correo, @RequestParam String password) {
+        Profesor profesor = profesorService.inicioSesion(correo, password);
+        if (profesor == null) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(profesor);
         }
     }
 }

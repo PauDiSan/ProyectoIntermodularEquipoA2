@@ -6,6 +6,9 @@ import org.example.gestorapi.service.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -19,8 +22,8 @@ public class ProfesorServiceImpl implements ProfesorService {
     }
 
     @Override
-    public Profesor findByUuid(String id) {
-        return profesorRepository.findById(id).orElse(null);
+    public Profesor findByEmail(String correo) {
+        return profesorRepository.findByCorreo(correo);
     }
 
     @Override
@@ -48,4 +51,27 @@ public class ProfesorServiceImpl implements ProfesorService {
             return null;
         }
     }
+
+    @Override
+    public Profesor inicioSesion(String email, String password) {
+        String md5Password = "";
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(password.getBytes(),0, password.length());
+            md5Password = new BigInteger(1,messageDigest.digest()).toString(16);
+            if (md5Password.length() < 32) {
+                md5Password = "0" + md5Password;
+            }
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+        return profesorRepository.findByCorreoAndPassword(email, md5Password);
+    }
+
+    @Override
+    public Profesor findById(String id) {
+        return profesorRepository.findById(id).orElse(null);
+    }
+
 }
