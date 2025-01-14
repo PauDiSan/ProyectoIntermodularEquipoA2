@@ -1,1 +1,0 @@
-# ProyectoIntermodularEquipoA2
