@@ -43,10 +43,10 @@ public class EmpTransporteController {
     @PutMapping("/transportes/{id}")
     public ResponseEntity<?> updateEmpTransporte(@PathVariable int id, @RequestBody EmpTransporte empresa){
         EmpTransporte et= empTransporteService.findById(id);
-        if(empresa == null)
+        if(et == null)
             return ResponseEntity.notFound().build();
         else
-            return ResponseEntity.ok(empTransporteService.actualizar(et,id));
+            return ResponseEntity.ok(empTransporteService.actualizar(empresa,id));
 
     }
     @DeleteMapping("/transportes/{id}")

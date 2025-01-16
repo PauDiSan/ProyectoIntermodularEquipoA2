@@ -42,7 +42,7 @@ public class GrupoController {
         if(grupo == null)
             return ResponseEntity.notFound().build();
         else
-            return ResponseEntity.ok(grupoService.actualizar(g,id));
+            return ResponseEntity.ok(grupoService.actualizar(grupo,id));
 
     }
     @DeleteMapping("/grupos/{id}")

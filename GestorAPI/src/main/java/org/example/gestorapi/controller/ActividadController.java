@@ -79,8 +79,8 @@ public class ActividadController {
     }
 
 
-    @PutMapping("/actividades/folleto")
-    public ResponseEntity<String> guardarFolletoActividad(@RequestParam("idActividad") int id,
+    @PutMapping("/actividades/{id}/folleto")
+    public ResponseEntity<String> guardarFolletoActividad(@PathVariable("id") int id,
                                                @RequestParam("fichero") MultipartFile multipartFile) {
 
         // Verificación de que el archivo no está vacío
@@ -92,7 +92,7 @@ public class ActividadController {
         String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
         // Directorio donde se almacenará el archivo
-        String uploadDir = "actividades/"+ id + "/archivos/";
+        String uploadDir = "actividades/"+ id + "/folletos/";
 
         // Crear el directorio si no existe
         File directory = new File(uploadDir);
@@ -144,7 +144,7 @@ public class ActividadController {
         }
     }
     @GetMapping("/actividades/{id}/folleto")
-    public ResponseEntity<Resource> getFolletoActividad(@RequestParam("idProyecto") int id) {
+    public ResponseEntity<Resource> getFolletoActividad(@PathVariable("id") int id) {
         // Buscar el proyecto por ID
         Actividad actividad = actividadService.findById(id);
 
@@ -161,7 +161,7 @@ public class ActividadController {
 
         try {
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("actividades/"+ id + "/archivos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ id + "/folletos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
 
             // Verificar si el archivo existe y es legible
