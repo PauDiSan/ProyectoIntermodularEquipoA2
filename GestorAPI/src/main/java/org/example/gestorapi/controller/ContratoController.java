@@ -82,6 +82,7 @@ public class ContratoController {
         }
 
     }
+
     @PutMapping("/contratos/{idActividad}/fichero")
     public ResponseEntity<String> getContratoPresupuesto(@PathVariable("idActividad") int idActividad,
                                                          @RequestBody Contrato contrato,
@@ -94,8 +95,6 @@ public class ContratoController {
         }
         Actividad actividad = actividadService.findById(idActividad);
         if(actividad != null) {
-
-
 
         // Limpia el nombre del archivo
         String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
@@ -121,8 +120,6 @@ public class ContratoController {
             return ResponseEntity.badRequest().body("El archivo debe un PDF");
         }
 
-
-
         if (contrato == null) {
             return ResponseEntity.badRequest().body("El contrato no existe.");
         }
@@ -135,22 +132,17 @@ public class ContratoController {
             // Actualizar el proyecto según el tipo de archivo
             // if (esImagen) {
 
-            if (esPDF) {
-                if(esPresupuesto){
+            if(esPresupuesto){
                     contrato.setUrlPresupuesto(nombreArchivo);
-                }else{
-                    contrato.setUrlFactura(nombreArchivo);
-                }
-                //} else if (esZip) {
-
-                // Guardar los cambios en la base de datos
-                contratoService.guardar(contrato);
-
-                return ResponseEntity.ok("Archivo" + (contrato.getUrlPresupuesto()==null?contrato.getUrlFactura():contrato.getUrlPresupuesto()) + "subido correctamente para la actividad con id" + contrato.getActividad().getId());
             }else{
-                return ResponseEntity.status(500).body("Formato fichero incorrecto no es pdf");
+                contrato.setUrlFactura(nombreArchivo);
             }
+            //} else if (esZip) {
 
+            // Guardar los cambios en la base de datos
+            contratoService.guardar(contrato);
+
+            return ResponseEntity.ok("Archivo" + (contrato.getUrlPresupuesto()==null?contrato.getUrlFactura():contrato.getUrlPresupuesto()) + "subido correctamente para la actividad con id" + contrato.getActividad().getId());
 
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());

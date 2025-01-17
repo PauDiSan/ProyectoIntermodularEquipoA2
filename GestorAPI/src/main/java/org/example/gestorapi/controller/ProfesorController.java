@@ -11,6 +11,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -118,11 +119,9 @@ public class ProfesorController {
 
         // Validar si el archivo es una imagen o un PDF
         boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
-        boolean esPDF = extension.equals("pdf");
-        boolean esZip = extension.equals("zip");
 
-        if (!esImagen && !esPDF && !esZip ) {
-            return ResponseEntity.badRequest().body("El archivo debe ser una imagen JPG, JPEG, PNG, un PDF o un Zip.");
+        if (!esImagen ) {
+            return ResponseEntity.badRequest().body("El archivo debe ser una imagen JPG, JPEG o PNG");
         }
 
         // Buscar el proyecto por ID
@@ -143,7 +142,7 @@ public class ProfesorController {
 
                 return ResponseEntity.ok("Archivo subido correctamente para el profesor con correo " + profesor.getCorreo());
             }else{
-                return ResponseEntity.status(500).body("Formato fichero incorrecto no es pdf");
+                return ResponseEntity.status(500).body("Formato fichero incorrecto no es imagen");
             }
 
 
@@ -179,7 +178,8 @@ public class ProfesorController {
 
             // Configurar los headers para descargar el archivo
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
 
         } catch (Exception e) {
