@@ -4,13 +4,16 @@ import org.apache.commons.io.FilenameUtils;
 import org.example.gestorapi.model.Foto;
 import org.example.gestorapi.model.Profesor;
 import org.example.gestorapi.repository.FotoRepository;
+import org.example.gestorapi.service.ActividadService;
 import org.example.gestorapi.service.FotoService;
+import org.example.gestorapi.service.ProfesorService;
 import org.example.gestorapi.service.files.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +32,8 @@ public class FotoController {
 
     @Autowired
     private FotoService fotoService;
+    @Autowired
+    private ActividadService actividadService;
     @Autowired
     private FotoRepository fotoRepository;
 
@@ -61,17 +66,24 @@ public class FotoController {
             return ResponseEntity.ok(fotoService.actualizar(foto,id));
 
     }
+
     @DeleteMapping("/fotos/{id}")
     public ResponseEntity<?> deleteFoto(@PathVariable int id){
         Foto eliminado= fotoService.eliminar(id);
-        if(eliminado == null)
+        if(eliminado == null){
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(eliminado);
+        }else{
+            File fichero = new File("actividades/"+ eliminado.getActividad().getId() + "/fotos/"+eliminado.getUrlFoto());
+            fichero.delete();
+            return ResponseEntity.ok(eliminado);
+        }
+
+
     }
 
     @PostMapping("/fotos/{idActividad}/foto")
     public ResponseEntity<Foto> guardarFotoActividad(@PathVariable("idActividad") int idActividad,
-                                                          @RequestBody Foto foto,
+                                                          @RequestParam("descripcion") String descripcion,
                                                           @RequestParam("fichero") MultipartFile multipartFile) {
 
         // Verificación de que el archivo no está vacío
@@ -106,17 +118,21 @@ public class FotoController {
         try {
             // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
             FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
+            Foto foto = new Foto();
+            if(actividadService.findById(idActividad) != null) {
+                // Actualizar el proyecto según el tipo de archivo
+                if (esImagen) {
+                    foto.setUrlFoto(nombreArchivo);
+                    foto.setDescripcion(descripcion);
+                    foto.setActividad(actividadService.findById(idActividad));
+                    fotoService.guardar(foto);
 
-            // Actualizar el proyecto según el tipo de archivo
-            if (esImagen) {
-                foto.setUrlFoto(nombreArchivo);
-                fotoService.guardar(foto);
-
-                return ResponseEntity.status(HttpStatus.CREATED).body(foto);
-            }else{
-                return ResponseEntity.status(500).build();
+                    return ResponseEntity.status(HttpStatus.CREATED).body(foto);
+                } else {
+                    return ResponseEntity.status(500).build();
+                }
             }
-
+            return ResponseEntity.status(500).build();
 
         } catch (IOException e) {
             return ResponseEntity.status(500).build();
@@ -127,7 +143,6 @@ public class FotoController {
                                                         @RequestParam("id") Integer id) {
         // Buscar el proyecto por ID
         Foto foto = fotoService.findById(id);
-
         if (foto == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
@@ -141,9 +156,8 @@ public class FotoController {
 
         try {
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("/actividades/"+ idActividad + "/fotos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ idActividad + "/fotos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
-
             // Verificar si el archivo existe y es legible
             if (!resource.exists() || !resource.isReadable()) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -151,7 +165,8 @@ public class FotoController {
 
             // Configurar los headers para descargar el archivo
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"")
+                    .contentType(MediaType.IMAGE_PNG)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
 
         } catch (Exception e) {
