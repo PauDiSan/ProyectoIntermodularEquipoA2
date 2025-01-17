@@ -115,10 +115,8 @@ public class FotoController {
 
             // Validar si el archivo es una imagen o un PDF
             boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
-            boolean esPDF = extension.equals("pdf");
-            boolean esZip = extension.equals("zip");
 
-            if (!esImagen && !esPDF && !esZip) {
+            if (!esImagen) {
                 return ResponseEntity.badRequest().build();
             }
 
@@ -128,16 +126,13 @@ public class FotoController {
                 Foto foto = new Foto();
                 if (actividadService.findById(idActividad) != null) {
                     // Actualizar el proyecto según el tipo de archivo
-                    if (esImagen) {
-                        foto.setUrlFoto(nombreArchivo);
-                        foto.setDescripcion(descripcion);
-                        foto.setActividad(actividadService.findById(idActividad));
-                        fotoService.guardar(foto);
 
-                        return ResponseEntity.status(HttpStatus.CREATED).body(foto);
-                    } else {
-                        return ResponseEntity.status(500).build();
-                    }
+                    foto.setUrlFoto(nombreArchivo);
+                    foto.setDescripcion(descripcion);
+                    foto.setActividad(actividadService.findById(idActividad));
+                    fotoService.guardar(foto);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(foto);
+
                 }
                 return ResponseEntity.status(500).build();
 
@@ -175,7 +170,7 @@ public class FotoController {
 
             // Configurar los headers para descargar el archivo
             return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_PNG)
+                    .contentType(MediaType.IMAGE_JPEG)
                     .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                     .body(resource);
 

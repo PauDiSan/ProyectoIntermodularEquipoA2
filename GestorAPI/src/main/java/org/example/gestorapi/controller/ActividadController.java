@@ -108,13 +108,10 @@ public class ActividadController {
         // Obtener la extensión del archivo
         String extension = FilenameUtils.getExtension(nombreArchivo).toLowerCase();
 
-        // Validar si el archivo es una imagen o un PDF
-        boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
         boolean esPDF = extension.equals("pdf");
-        boolean esZip = extension.equals("zip");
 
-        if (!esImagen && !esPDF && !esZip ) {
-            return ResponseEntity.badRequest().body("El archivo debe ser una imagen JPG, JPEG, PNG, un PDF o un Zip.");
+        if (!esPDF) {
+            return ResponseEntity.badRequest().body("El archivo debe ser un PDF.");
         }
 
 
@@ -124,26 +121,19 @@ public class ActividadController {
             // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
             FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
 
-            // Actualizar el proyecto según el tipo de archivo
-            // if (esImagen) {
 
-             if (esPDF) {
-                actividad.setUrlFolleto(nombreArchivo);
-            //} else if (esZip) {
-
-                 // Guardar los cambios en la base de datos
-                 actividadService.guardar(actividad);
-
-                 return ResponseEntity.ok("Archivo subido correctamente para la actividad " + actividad.getTitulo() + " con ID " + id);
-            }else{
-                 return ResponseEntity.status(500).body("Formato fichero incorrecto no es pdf");
-             }
+            actividad.setUrlFolleto(nombreArchivo);
 
 
-                } catch (IOException e) {
-                     return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());
-                }
-            }
+            // Guardar los cambios en la base de datos
+            actividadService.guardar(actividad);
+
+            return ResponseEntity.ok("Archivo subido correctamente para la actividad " + actividad.getTitulo() + " con ID " + id);
+
+        } catch (IOException e) {
+            return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());
+        }
+        }
         return ResponseEntity.status(500).body("Error al subir el archivo");
     }
     @GetMapping("/actividades/{id}/folleto")
@@ -164,7 +154,7 @@ public class ActividadController {
 
         try {
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("actividades/"+ id +"_"+actividad.getTitulo().replaceAll(" ","_") + "/folletos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ id +"_" + actividad.getTitulo().replaceAll(" ","_") + "/folletos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
 
             // Verificar si el archivo existe y es legible
