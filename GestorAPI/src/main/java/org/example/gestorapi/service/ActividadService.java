@@ -12,7 +12,7 @@ public interface ActividadService {
     Actividad guardar(Actividad actividad);
     Actividad actualizar(Actividad nuevo, Integer id);
     Actividad eliminar(Integer id);
-
+    void excel(Actividad actividad);
 
 
 }

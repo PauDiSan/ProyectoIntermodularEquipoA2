@@ -5,16 +5,20 @@ import org.example.gestorapi.model.Actividad;
 import org.example.gestorapi.service.ActividadService;
 import org.example.gestorapi.service.files.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,6 +49,36 @@ public class ActividadController {
             return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.ok(actividad);
+        }
+    }
+
+    @GetMapping("/actividades/excel")
+    public ResponseEntity<Resource> downloadExcel(@RequestParam("actividad") int actividad) {
+        try {
+            actividadService.excel(actividadService.findById(actividad));
+            String filename = "autorizacion.xlsx";
+            String tmpdir = System.getProperty("java.io.tmpdir");
+            // Definir la ruta del archivo
+            Path filePath = Paths.get(tmpdir + filename);
+            File file = filePath.toFile();
+
+            // Verificar si el archivo existe
+            if (!file.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            // Crear un InputStreamResource a partir del archivo
+            FileInputStream fileInputStream = new FileInputStream(file);
+            InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+            // Retornar el archivo con los encabezados adecuados
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename) // Hacerlo descargable
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM) // Tipo de contenido binario
+                    .body(resource); // Usar InputStreamResource para la respuesta
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Manejo de error
         }
     }
 
