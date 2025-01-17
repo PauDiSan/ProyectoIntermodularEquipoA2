@@ -107,9 +107,11 @@ public class ProfesorController {
 
         // Crear el directorio si no existe
         File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
+        //Se borra el directorio y se vuelve a crear con la foto nueva
+        directory.delete();
+        directory.mkdirs();
+
+
 
         // Obtener la extensión del archivo
         String extension = FilenameUtils.getExtension(nombreArchivo).toLowerCase();

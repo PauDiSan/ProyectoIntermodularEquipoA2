@@ -1,6 +1,7 @@
 package org.example.gestorapi.controller;
 
 import org.apache.commons.io.FilenameUtils;
+import org.example.gestorapi.model.Actividad;
 import org.example.gestorapi.model.Foto;
 import org.example.gestorapi.model.Profesor;
 import org.example.gestorapi.repository.FotoRepository;
@@ -73,7 +74,8 @@ public class FotoController {
         if(eliminado == null){
             return ResponseEntity.notFound().build();
         }else{
-            File fichero = new File("actividades/"+ eliminado.getActividad().getId() + "/fotos/"+eliminado.getUrlFoto());
+            File fichero = new File("actividades/"+ eliminado.getActividad().getId()+"_"+
+                    eliminado.getActividad().getTitulo().replaceAll(" ","_") + "/fotos/"+eliminado.getUrlFoto());
             fichero.delete();
             return ResponseEntity.ok(eliminado);
         }
@@ -94,47 +96,55 @@ public class FotoController {
         // Limpia el nombre del archivo
         String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
-        // Directorio donde se almacenará el archivo
-        String uploadDir = "actividades/"+ idActividad + "/fotos/";
 
-        // Crear el directorio si no existe
-        File directory = new File(uploadDir);
-        if (!directory.exists()) {
-            directory.mkdirs();
-        }
+        Actividad actividad = actividadService.findById(idActividad);
+        if(actividad != null) {
 
-        // Obtener la extensión del archivo
-        String extension = FilenameUtils.getExtension(nombreArchivo).toLowerCase();
 
-        // Validar si el archivo es una imagen o un PDF
-        boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
-        boolean esPDF = extension.equals("pdf");
-        boolean esZip = extension.equals("zip");
+            // Directorio donde se almacenará el archivo
+            String uploadDir = "actividades/" + idActividad + "_" + actividad.getTitulo().replaceAll(" ","_") + "/fotos/";
 
-        if (!esImagen && !esPDF && !esZip ) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        try {
-            // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
-            FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
-            Foto foto = new Foto();
-            if(actividadService.findById(idActividad) != null) {
-                // Actualizar el proyecto según el tipo de archivo
-                if (esImagen) {
-                    foto.setUrlFoto(nombreArchivo);
-                    foto.setDescripcion(descripcion);
-                    foto.setActividad(actividadService.findById(idActividad));
-                    fotoService.guardar(foto);
-
-                    return ResponseEntity.status(HttpStatus.CREATED).body(foto);
-                } else {
-                    return ResponseEntity.status(500).build();
-                }
+            // Crear el directorio si no existe
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
             }
-            return ResponseEntity.status(500).build();
 
-        } catch (IOException e) {
+            // Obtener la extensión del archivo
+            String extension = FilenameUtils.getExtension(nombreArchivo).toLowerCase();
+
+            // Validar si el archivo es una imagen o un PDF
+            boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
+            boolean esPDF = extension.equals("pdf");
+            boolean esZip = extension.equals("zip");
+
+            if (!esImagen && !esPDF && !esZip) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            try {
+                // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
+                FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
+                Foto foto = new Foto();
+                if (actividadService.findById(idActividad) != null) {
+                    // Actualizar el proyecto según el tipo de archivo
+                    if (esImagen) {
+                        foto.setUrlFoto(nombreArchivo);
+                        foto.setDescripcion(descripcion);
+                        foto.setActividad(actividadService.findById(idActividad));
+                        fotoService.guardar(foto);
+
+                        return ResponseEntity.status(HttpStatus.CREATED).body(foto);
+                    } else {
+                        return ResponseEntity.status(500).build();
+                    }
+                }
+                return ResponseEntity.status(500).build();
+
+            } catch (IOException e) {
+                return ResponseEntity.status(500).build();
+            }
+        }else{
             return ResponseEntity.status(500).build();
         }
     }
@@ -156,7 +166,7 @@ public class FotoController {
 
         try {
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("actividades/"+ idActividad + "/fotos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ idActividad +"_" + foto.getActividad().getTitulo().replaceAll(" ","_") + "/fotos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
             // Verificar si el archivo existe y es legible
             if (!resource.exists() || !resource.isReadable()) {

@@ -4,6 +4,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.example.gestorapi.model.Actividad;
 import org.example.gestorapi.model.Contrato;
 import org.example.gestorapi.model.Foto;
+import org.example.gestorapi.service.ActividadService;
 import org.example.gestorapi.service.ContratoService;
 import org.example.gestorapi.service.files.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,8 @@ public class ContratoController {
 
     @Autowired
     private ContratoService contratoService;
+    @Autowired
+    private ActividadService actividadService;
 
     @GetMapping("/contratos")
     public ResponseEntity<?> getContratoes() {
@@ -89,12 +92,16 @@ public class ContratoController {
         if (multipartFile.isEmpty()) {
             return ResponseEntity.badRequest().body("No se ha seleccionado un archivo.");
         }
+        Actividad actividad = actividadService.findById(idActividad);
+        if(actividad != null) {
+
+
 
         // Limpia el nombre del archivo
         String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
         // Directorio donde se almacenará el archivo
-        String uploadDir = "actividades/"+ idActividad + "/contratos/";
+        String uploadDir = "actividades/"+ idActividad +"_" + actividad.getTitulo().replaceAll(" ","_")+ "/contratos/";
 
         // Crear el directorio si no existe
         File directory = new File(uploadDir);
@@ -121,6 +128,7 @@ public class ContratoController {
         }
 
         try {
+
             // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
             FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
 
@@ -147,6 +155,9 @@ public class ContratoController {
         } catch (IOException e) {
             return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());
         }
+        }else{
+            return ResponseEntity.notFound().build();
+        }
     }
     @GetMapping("/contratos/{idActividad}/fichero")
     public ResponseEntity<Resource> getFolletoActividad(@PathVariable("idActividad") Integer idActividad,
@@ -170,10 +181,12 @@ public class ContratoController {
         if (nombreArchivo == null || nombreArchivo.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-
+        Actividad actividad = actividadService.findById(idActividad);
+        if (actividad != null) {
         try {
+
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("actividades/"+ idActividad + "/contratos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ idActividad+"_"+ actividad.getTitulo().replaceAll(" ","_") + "/contratos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
 
             // Verificar si el archivo existe y es legible
@@ -188,6 +201,9 @@ public class ContratoController {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 

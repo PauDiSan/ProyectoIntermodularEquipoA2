@@ -91,8 +91,13 @@ public class ActividadController {
         // Limpia el nombre del archivo
         String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
 
+        // Buscar el proyecto por ID
+        Actividad actividad = actividadService.findById(id);
+        if(actividad != null) {
+
+
         // Directorio donde se almacenará el archivo
-        String uploadDir = "actividades/"+ id + "/folletos/";
+        String uploadDir = "actividades/"+ id+"_" + actividad.getTitulo().replaceAll(" ","_") + "/folletos/";
 
         // Crear el directorio si no existe
         File directory = new File(uploadDir);
@@ -112,12 +117,8 @@ public class ActividadController {
             return ResponseEntity.badRequest().body("El archivo debe ser una imagen JPG, JPEG, PNG, un PDF o un Zip.");
         }
 
-        // Buscar el proyecto por ID
-        Actividad actividad = actividadService.findById(id);
 
-        if (actividad == null) {
-            return ResponseEntity.badRequest().body("La actividad no existe.");
-        }
+
 
         try {
             // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
@@ -139,9 +140,11 @@ public class ActividadController {
              }
 
 
-        } catch (IOException e) {
-            return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());
-        }
+                } catch (IOException e) {
+                     return ResponseEntity.status(500).body("Error al subir el archivo: " + e.getMessage());
+                }
+            }
+        return ResponseEntity.status(500).body("Error al subir el archivo");
     }
     @GetMapping("/actividades/{id}/folleto")
     public ResponseEntity<Resource> getFolletoActividad(@PathVariable("id") int id) {
@@ -161,7 +164,7 @@ public class ActividadController {
 
         try {
             // Ruta al archivo almacenado
-            Path filePath = Paths.get("actividades/"+ id + "/folletos/").resolve(nombreArchivo);
+            Path filePath = Paths.get("actividades/"+ id +"_"+actividad.getTitulo().replaceAll(" ","_") + "/folletos/").resolve(nombreArchivo);
             Resource resource = new UrlResource(filePath.toUri());
 
             // Verificar si el archivo existe y es legible

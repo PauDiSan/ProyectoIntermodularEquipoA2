@@ -95,6 +95,14 @@ public class Actividad {
     @Column(name = "importe_por_alumno", precision = 5, scale = 2)
     private BigDecimal importePorAlumno;
 
+    @Lob
+    @Column(name="longitud")
+    private String longitud;
+
+    @Lob
+    @Column(name="latitud")
+    private String latitud;
+
     public Integer getId() {
         return id;
     }
@@ -256,4 +264,19 @@ public class Actividad {
         this.importePorAlumno = importePorAlumno;
     }
 
+    public String getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(String longitud) {
+        this.longitud = longitud;
+    }
+
+    public String getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(String latitud) {
+        this.latitud = latitud;
+    }
 }
