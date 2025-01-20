@@ -53,6 +53,21 @@ public class FotoController {
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(foto);
     }
+
+    @GetMapping("/fotos/actividad/{idActividad}")
+    public ResponseEntity<?> getFotoByActividad(@PathVariable int idActividad){
+        Actividad actividad = actividadService.findById(idActividad);
+        if(actividad == null){
+            return ResponseEntity.notFound().build();
+        }else{
+            List<Foto> fotos = fotoService.findByActividad(actividad);
+            if(fotos.isEmpty())
+                return ResponseEntity.notFound().build();
+            else
+                return ResponseEntity.ok(fotos);
+        }
+    }
+
     @PostMapping("/fotos")
     public ResponseEntity<Foto> nuevaFoto(@RequestBody Foto foto){
         Foto guardado= fotoService.guardar(foto);

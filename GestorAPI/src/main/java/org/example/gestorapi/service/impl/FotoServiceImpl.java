@@ -1,5 +1,6 @@
 package org.example.gestorapi.service.impl;
 
+import org.example.gestorapi.model.Actividad;
 import org.example.gestorapi.model.Foto;
 import org.example.gestorapi.repository.FotoRepository;
 import org.example.gestorapi.service.FotoService;
@@ -49,4 +50,10 @@ public class FotoServiceImpl implements FotoService {
             return null;
         }
     }
+
+    @Override
+    public List<Foto> findByActividad(Actividad actividad) {
+        return fotoRepository.findByActividad(actividad);
+    }
+
 }

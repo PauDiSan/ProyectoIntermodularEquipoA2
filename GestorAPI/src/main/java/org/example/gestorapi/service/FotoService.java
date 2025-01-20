@@ -1,5 +1,6 @@
 package org.example.gestorapi.service;
 
+import org.example.gestorapi.model.Actividad;
 import org.example.gestorapi.model.Foto;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +13,5 @@ public interface FotoService {
     Foto guardar(Foto foto);
     Foto actualizar(Foto nuevo, Integer id);
     Foto eliminar(Integer id);
+    List<Foto> findByActividad(Actividad actividad);
 }
