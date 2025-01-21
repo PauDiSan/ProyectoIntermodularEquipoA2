@@ -1,4 +1,4 @@
-package org.example.gestorapi.model;
+package org.example.gestorapi.model.enumerados;
 
 public enum Tipo {
     extraescolar, complementaria

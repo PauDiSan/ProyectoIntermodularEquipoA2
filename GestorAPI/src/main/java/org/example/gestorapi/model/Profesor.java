@@ -3,6 +3,7 @@ package org.example.gestorapi.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.example.gestorapi.model.enumerados.Rol;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
@@ -42,7 +43,7 @@ public class Profesor {
     @ColumnDefault("'PROF'")
     @Lob
     @Column(name = "rol", nullable = false)
-    private String rol;
+    private Rol rol;
 
     @NotNull
     @ColumnDefault("1")
@@ -110,11 +111,11 @@ public class Profesor {
         this.password = password;
     }
 
-    public String getRol() {
+    public Rol getRol() {
         return rol;
     }
 
-    public void setRol(String rol) {
+    public void setRol(Rol rol) {
         this.rol = rol;
     }
 

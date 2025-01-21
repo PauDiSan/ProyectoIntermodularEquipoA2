@@ -2,6 +2,8 @@ package org.example.gestorapi.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.example.gestorapi.model.enumerados.Estado;
+import org.example.gestorapi.model.enumerados.Tipo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

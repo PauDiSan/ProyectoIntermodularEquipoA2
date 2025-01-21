@@ -3,6 +3,7 @@ package org.example.gestorapi.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.example.gestorapi.model.enumerados.Etapa;
 
 @Entity
 @Table(name = "cursos")
@@ -25,7 +26,7 @@ public class Curso {
     @NotNull
     @Lob
     @Column(name = "etapa", nullable = false)
-    private String etapa;
+    private Etapa etapa;
 
     @NotNull
     @Column(name = "nivel", nullable = false)
@@ -60,11 +61,11 @@ public class Curso {
         this.titulo = titulo;
     }
 
-    public String getEtapa() {
+    public Etapa getEtapa() {
         return etapa;
     }
 
-    public void setEtapa(String etapa) {
+    public void setEtapa(Etapa etapa) {
         this.etapa = etapa;
     }
 
