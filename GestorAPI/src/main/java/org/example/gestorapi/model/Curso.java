@@ -23,6 +23,7 @@ public class Curso {
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     @Lob
     @Column(name = "etapa", nullable = false)

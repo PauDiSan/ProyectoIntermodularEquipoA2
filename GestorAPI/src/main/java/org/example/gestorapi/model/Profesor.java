@@ -39,8 +39,8 @@ public class Profesor {
     @Column(name = "password", nullable = false, length = 32)
     private String password;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
-    @ColumnDefault("'PROF'")
     @Lob
     @Column(name = "rol", nullable = false)
     private Rol rol;

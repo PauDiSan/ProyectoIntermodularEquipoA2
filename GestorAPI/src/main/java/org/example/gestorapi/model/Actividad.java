@@ -22,6 +22,7 @@ public class Actividad {
     @Column(name = "titulo", nullable = false)
     private String titulo;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     @Lob
     @Column(name = "tipo", nullable = false)
@@ -72,6 +73,7 @@ public class Actividad {
     @Column(name = "comentarios")
     private String comentarios;
 
+    @Enumerated(EnumType.STRING)
     @NotNull
     @Lob
     @Column(name = "estado", nullable = false)
