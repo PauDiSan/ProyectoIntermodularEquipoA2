@@ -1,6 +1,7 @@
 package org.example.gestorapi.service.impl;
 
 import org.example.gestorapi.model.GrupoParticipante;
+import org.example.gestorapi.model.ProfParticipante;
 import org.example.gestorapi.repository.GrupoParticipanteRepository;
 import org.example.gestorapi.service.GrupoParticipanteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +49,10 @@ public class GrupoParticipanteServiceImpl implements GrupoParticipanteService {
             return null;
         }
     }
+
+    @Override
+    public  List<GrupoParticipante> findGrupoParticipantesByActividades_Id(Integer actividadId){
+        return grupoParticipanteRepository.findGrupoParticipantesByActividades_Id(actividadId);
+    }
+
 }

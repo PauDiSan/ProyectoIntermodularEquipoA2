@@ -12,4 +12,6 @@ public interface ProfParticipanteService {
     ProfParticipante guardar(ProfParticipante profParticipante);
     ProfParticipante actualizar(ProfParticipante nuevo, Integer id);
     ProfParticipante eliminar(Integer id);
+    List<ProfParticipante> findProfParticipanteByActividadId(Integer actividadId);
+
 }

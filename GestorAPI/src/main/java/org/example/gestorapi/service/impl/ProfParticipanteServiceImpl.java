@@ -49,4 +49,10 @@ public class ProfParticipanteServiceImpl implements ProfParticipanteService {
             return null;
         }
     }
+
+    @Override
+    public  List<ProfParticipante> findProfParticipanteByActividadId(Integer actividadId){
+        return profParticipanteRepository.findProfParticipanteByActividadId(actividadId);
+    }
+
 }
