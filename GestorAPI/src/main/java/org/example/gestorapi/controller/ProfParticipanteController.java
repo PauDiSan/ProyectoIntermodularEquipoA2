@@ -37,6 +37,16 @@ public class ProfParticipanteController {
         }
     }
 
+    @GetMapping("/profesoresParticipantes/actividad/{id}")
+    public ResponseEntity<?> getProfesorParticipanteActividads(@PathVariable Integer id) {
+        List<ProfParticipante> profParticipantes = profParticipanteService.findProfParticipanteByActividadId(id);
+        if (profParticipantes.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(profParticipantes);
+        }
+    }
+
     @PostMapping("/profesoresParticipantes")
     public ResponseEntity<ProfParticipante> createProfesorParticipante(@RequestBody ProfParticipante profParticipante) {
         ProfParticipante nuevo = profParticipanteService.guardar(profParticipante);
@@ -66,4 +76,5 @@ public class ProfParticipanteController {
             return ResponseEntity.ok(profParticipanteService.eliminar(id));
         }
     }
+
 }

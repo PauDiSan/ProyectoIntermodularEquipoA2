@@ -35,6 +35,16 @@ public class GrupoParticipanteController {
         }
     }
 
+    @GetMapping("/gruposParticipantes/actividad/{id}")
+    public ResponseEntity<?> getGruposParticipantes(@PathVariable Integer id) {
+        List<GrupoParticipante> gruposParticipantes = grupoParticipanteService.findGrupoParticipantesByActividades_Id(id);
+        if (gruposParticipantes.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(gruposParticipantes);
+        }
+    }
+
     @PostMapping("/gruposParticipantes")
     public ResponseEntity<GrupoParticipante> createGrupoParticipante(@RequestBody GrupoParticipante grupoParticipante) {
         GrupoParticipante nuevo = grupoParticipanteService.guardar(grupoParticipante);

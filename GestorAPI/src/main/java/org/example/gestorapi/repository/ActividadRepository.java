@@ -9,4 +9,5 @@ import java.util.List;
 public interface ActividadRepository extends JpaRepository<Actividad, Integer> {
 
 
+
 }
