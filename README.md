@@ -106,14 +106,17 @@ Los repositorios en esta API representan la capa de acceso a datos.
 
 ### Principales Repositorios
 
-| Repositorio            | Entidad asociada | Descripción                                              |
-|------------------------|------------------|----------------------------------------------------------|
-| `AlumnoRepository`     | `Alumno`         | Maneja las consultas relacionadas con alumnos. |
-| `CicloRepository`      | `Ciclo`          | Proporciona acceso a los ciclos formativos.              |
-| `ProyectoRepository`   | `Proyecto`       | Gestiona los datos de los proyectos.                     |
-| `ProfesorRepository`   | `Profesor`       | Acceso y manipulación de datos relacionados con los profesores. |
-| `RealizaRepository`    | `Realiza`        | Relación entre alumnos y proyectos.                      |
-| `EvaluaRepository`     | `Evalua`         | Relación entre profesores y proyectos evaluados.         |
+| Repositorio               | Entidad asociada | Descripción                                              |
+|---------------------------|------------------|----------------------------------------------------------|
+| `ActividadRepository`     | `Actividad`      | Maneja las consultas relacionadas con alumnos. |
+| `ContratoRepository`      | `Ciclo`          | Proporciona acceso a los ciclos formativos.              |
+| `CursoRepository`         | `Curso`          | Gestiona los datos de los proyectos.                     |
+| `DepartamentoRepository`  | `Departamento`   | Acceso y manipulación de datos relacionados con los profesores. |
+| `EmpTransporteRepository` | `EmpTransporte`  | Relación entre alumnos y proyectos.                      |
+| `FotoRepository`          | `Fotos`          | Relación entre profesores y proyectos evaluados.         |
+| `ProfesorRepository`      | `Profesor`       | Relación entre profesores y proyectos evaluados.         |
+
+
 
 ---
 
