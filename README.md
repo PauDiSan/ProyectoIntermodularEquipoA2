@@ -23,7 +23,7 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Introducción
 
-Esta API esta basada en la Base De Datos de Proyectos, en la cual está creada para el guardado y el procesado de los 
+Esta API esta basada en la Base De Datos de Proyectos, en la cual está creada para el guardado y el procesado de los
 proyectos realizados por el alumnado del instituto IES MIGUEL HERRERO, para su consulta y su gestión.
 
 ## Configuración
@@ -104,7 +104,7 @@ Además, se utilizan los **Enums** para valores constantes como etapa, rol, esta
 
 ## Repositorios (Repositories)
 
-Los repositorios en esta API representan la capa de acceso a datos. 
+Los repositorios en esta API se encargan de almacenar consultas para poder acceder a los datos de la BBDD.
 
 ### Principales Repositorios
 
@@ -122,17 +122,25 @@ Los repositorios en esta API representan la capa de acceso a datos.
 
 ---
 
-### Ejemplo de Repositorio: `AlumnoRepository`
+### Ejemplo de Repositorio: `ProfesorRepository`
 
-El repositorio `AlumnoRepository` permite acceder y manipular los datos de los alumnos. 
+El repositorio de JPA `ProfesorRepository` permite tener consultas prediseñadas para casos concretos:
+- `Profesor findByCorreoAndPassword(String correo, String password)`: Método de iniciar sesión.
+- `Profesor findByCorreo(String correo)`: Método para encontrar el profesor por correo.
 
-- `findAll()`: Obtiene todos los alumnos.
-- `findByDni(String dni)`: Busca un alumno por su DNI.
-- `findByEmail(String email)`: Busca un alumno por su email.
-- `findById(Long id)`: Busca un alumno por su ID.
-- `save(Alumno alumno)`: Guarda o actualiza un alumno.
-- `update(Alumno alumno)`: Actualiza un alumno.
-- `delete(Alumno alumno)`: Elimina un alumno.
+## Service
+Los services en esta API representan la capa de acceso a datos
+
+ Service                   | Entidad asociada | Descripción                                              |
+|---------------------------|------------------|----------------------------------------------------------|
+| `ActividadService`        | `Actividad`      | Maneja las consultas relacionadas con alumnos. |
+| `ContratoService`      | `Ciclo`          | Proporciona acceso a los ciclos formativos.              |
+| `CursoService`         | `Curso`          | Gestiona los datos de los proyectos.                     |
+| `DepartamentoService`  | `Departamento`   | Acceso y manipulación de datos relacionados con los profesores. |
+| `EmpTransporteService` | `EmpTransporte`  | Relación entre alumnos y proyectos.                      |
+| `FotoService`          | `Fotos`          | Relación entre profesores y proyectos evaluados.         |
+| `ProfesorService`      | `Profesor`       | Relación entre profesores y proyectos evaluados.         |
+
 
 # Controladores (EndPoints)
 
@@ -140,76 +148,140 @@ En esta sección se detallan los controladores de la API, los cuales son respons
 
 A continuación, se describe el controlador `AlumnoController`, presentando un resumen  de todos los endpoints disponibles en este controlador.
 
-# Endpoints de ProjectStore - AlumnoController
-
-| **Método HTTP** | **Endpoint**              | **Descripción**                                      | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                       |
-|-----------------|---------------------------|------------------------------------------------------|-----------------------|----------------------|--------------------------------------|
-| `GET`           | `/alumnos`                | Obtiene todos los alumnos.                           | Lista de alumnos       | `200 OK`             | Ninguno                              |
-| `GET`           | `/alumnos/dni/{dni}`      | Obtiene un alumno por su DNI.                        | Detalles del alumno    | `200 OK`             | `dni` (string)                       |
-| `GET`           | `/alumnos/email/{email}`  | Obtiene un alumno por su correo electrónico.         | Detalles del alumno    | `200 OK`             | `email` (string)                     |
-| `POST`          | `/alumnos`                | Crea un nuevo alumno.                                | Detalles del alumno creado | `201 Created`       | Cuerpo JSON con los datos del alumno |
-| `PUT`           | `/alumnos/{idalumno}`     | Actualiza un alumno existente.                       | Alumno actualizado     | `200 OK`             | `idalumno` (string), Cuerpo JSON con los datos a actualizar |
-| `DELETE`        | `/alumnos/{idAlumno}`     | Elimina un alumno por su ID. 
-
-# Endpoints de ProjectStore - CicloController
-
-| **Método HTTP** | **Endpoint**                  | **Descripción**                                    | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                          |
-|-----------------|-------------------------------|----------------------------------------------------|-----------------------|----------------------|-----------------------------------------|
-| `GET`           | `/ciclos`                     | Obtiene todos los ciclos.                          | Lista de ciclos        | `200 OK`             | Ninguno                                 |
-| `GET`           | `/ciclos/codciclo/{codciclo}`  | Obtiene un ciclo por su código.                    | Detalles del ciclo     | `200 OK`             | `codciclo` (string)                     |
-| `GET`           | `/ciclos/etapa/{etapa}`        | Obtiene ciclos según su etapa.                     | Lista de ciclos        | `200 OK`             | `etapa` (enum de tipo `Etapa`)          |
-
-# Endpoints de ProjectStore - EvaluaController
-
-| **Método HTTP** | **Endpoint**                       | **Descripción**                                     | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                           |
-|-----------------|------------------------------------|-----------------------------------------------------|-----------------------|----------------------|------------------------------------------|
-| `GET`           | `/evaluan`                         | Obtiene todas las evaluaciones.                      | Lista de evaluaciones  | `200 OK`             | Ninguno                                  |
-| `GET`           | `/evaluan/id/{id}`                 | Obtiene una evaluación por su ID.                    | Detalles de la evaluación | `200 OK`             | `id` (int)                               |
-| `GET`           | `/evaluan/profesor/{profesor}`     | Obtiene evaluaciones asociadas a un profesor.        | Lista de evaluaciones  | `200 OK`             | `profesor` (string)                      |
-| `GET`           | `/evaluan/proyecto/{proyecto}`     | Obtiene evaluaciones asociadas a un proyecto.        | Lista de evaluaciones  | `200 OK`             | `proyecto` (int)                         |
-| `POST`          | `/evaluan`                         | Crea una nueva evaluación.                          | Detalles de la evaluación creada | `201 Created`   | Cuerpo JSON con los datos de la evaluación |
-| `PUT`           | `/evaluan/{id}`                    | Actualiza una evaluación existente.                 | Evaluación actualizada | `200 OK`             | `id` (int), Cuerpo JSON con los datos a actualizar |
-| `DELETE`        | `/evaluan/{id}`                    | Elimina una evaluación por su ID.                   | Sin contenido           | `204 No Content`     | `id` (int)                               |
-
-# Endpoints de ProjectStore - ProfesorController
-
-| **Método HTTP** | **Endpoint**                        | **Descripción**                                      | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
-|-----------------|-------------------------------------|------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
-| `GET`           | `/profesores`                       | Obtiene todos los profesores.                        | Lista de profesores     | `200 OK`             | Ninguno                                      |
-| `GET`           | `/profesores/idprofesor/{idProfesor}`| Obtiene un profesor por su ID.                       | Detalles del profesor   | `200 OK`             | `idProfesor` (string)                        |
-| `GET`           | `/profesores/admin/{admin}`         | Obtiene profesores según si son administradores.     | Lista de profesores     | `200 OK`             | `admin` (boolean)                            |
-| `GET`           | `/profesores/nombre/{nombre}`       | Obtiene un profesor por su nombre y apellidos.       | Detalles del profesor   | `200 OK`             | `nombre` (string), `apellidos` (string)      |
-| `GET`           | `/profesores/email/{email}`         | Obtiene un profesor por su correo electrónico y contraseña. | Detalles del profesor   | `200 OK`             | `email` (string), `contraseña` (string)      |
-| `POST`          | `/profesores`                       | Crea un nuevo profesor.                              | Detalles del profesor creado | `201 Created`   | Cuerpo JSON con los datos del profesor       |
-| `PUT`           | `/profesores/{idprofesor}`          | Actualiza un profesor existente.                     | Profesor actualizado    | `200 OK`             | `idprofesor` (string), Cuerpo JSON con los datos a actualizar |
-| `DELETE`        | `/profesores/{idProfesor}`          | Elimina un profesor por su ID.                       | Sin contenido           | `204 No Content`     | `idProfesor` (string)                        |
-
-# Endpoints de ProjectStore - ProyectoController
-
-| **Método HTTP** | **Endpoint**                             | **Descripción**                                       | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
-|-----------------|------------------------------------------|-------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
-| `GET`           | `/proyectos`                             | Obtiene todos los proyectos.                          | Lista de proyectos      | `200 OK`             | Ninguno                                      |
-| `GET`           | `/proyectos/tipo/{tipo}`                 | Obtiene proyectos por tipo.                           | Lista de proyectos      | `200 OK`             | `tipo` (string)                              |
-| `GET`           | `/proyectos/nombre/{nombre}`             | Obtiene un proyecto por su nombre.                    | Detalles del proyecto   | `200 OK`             | `nombre` (string)                            |
-| `GET`           | `/proyectos/idproyecto/{idProyecto}`     | Obtiene un proyecto por su ID.                        | Detalles del proyecto   | `200 OK`             | `idProyecto` (int)                           |
-| `POST`          | `/proyectos`                             | Crea un nuevo proyecto.                               | Detalles del proyecto creado | `201 Created`     | Cuerpo JSON con los datos del proyecto       |
-| `PUT`           | `/proyectos/{proyecto}`                  | Actualiza un proyecto existente.                      | Proyecto actualizado    | `200 OK`             | `proyecto` (int), Cuerpo JSON con los datos a actualizar |
-| `DELETE`        | `/proyectos/{idProyecto}`                | Elimina un proyecto por su ID.                        | Sin contenido           | `204 No Content`     | `idProyecto` (int)                           |
-| `PUT`           | `/proyectos/ficheros`                    | Sube un archivo (imagen, PDF, ZIP) asociado a un proyecto. | Confirmación de archivo subido | `200 OK`         | `idProyecto` (int), `fichero` (archivo)      |
-| `GET`           | `/proyectos/ficheros`                    | Obtiene un archivo asociado a un proyecto (logo, memoria, archivos). | Archivo solicitado       | `200 OK`             | `idProyecto` (int), `tipo` (string: logo, memoria, archivos) |
 
 
-# Endpoints de ProjectStore - RealizaController
+# Endpoints de la API - ActividadController
 
-| **Método HTTP** | **Endpoint**                             | **Descripción**                                       | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
-|-----------------|------------------------------------------|-------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
-| `GET`           | `/realizan`                              | Obtiene todas las realizaciones.                       | Lista de realizaciones  | `200 OK`             | Ninguno                                      |
-| `GET`           | `/realizan/id/{id}`                      | Obtiene una realización por su ID.                     | Detalles de la realización | `200 OK`             | `id` (int)                                   |
-| `GET`           | `/realizan/alumno/{alumno}`              | Obtiene la realización por el nombre del alumno.       | Detalles de la realización | `200 OK`             | `alumno` (string)                            |
-| `GET`           | `/realizan/proyecto/{proyecto}`          | Obtiene la realización por el ID del proyecto.         | Detalles de la realización | `200 OK`             | `proyecto` (int)                             |
-| `POST`          | `/realizan`                              | Crea una nueva realización.                           | Detalles de la realización creada | `201 Created`     | Cuerpo JSON con los datos de la realización   |
-| `PUT`           | `/realizan/{id}`                         | Actualiza una realización existente.                  | Realización actualizada | `200 OK`             | `id` (int), Cuerpo JSON con los datos a actualizar |
-| `DELETE`        | `/realizan/{realiza}`                    | Elimina una realización por su ID.                    | Sin contenido           | `204 No Content`     | `realiza` (realización)                      |
+| **Método HTTP** | **Endpoint**                            | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|-----------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/actividades                       | Obtiene todas las actividades.                               | Lista de actividades                                              | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/actividades/{id}                  | Obtiene una actividad específica por ID.                      | Actividad específica                                              | `200 OK`              | `id` (int) - ID de la actividad                                  |
+| **GET**         | /acex/actividades/excel                 | Descarga un archivo Excel con la información de una actividad. | Archivo Excel con la información de la actividad                  | `200 OK`              | `actividad` (int) - ID de la actividad para generar el Excel      |
+| **POST**        | /acex/actividades                       | Crea una nueva actividad.                                     | Actividad recién creada                                           | `201 Created`         | `Actividad` (JSON) - Datos de la actividad                        |
+| **PUT**         | /acex/actividades/{id}                  | Actualiza una actividad existente por ID.                     | Actividad actualizada                                             | `200 OK`              | `id` (int) - ID de la actividad, `Actividad` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/actividades/{id}                  | Elimina una actividad específica por ID.                      | Mensaje de confirmación de eliminación                             | `200 OK`              | `id` (int) - ID de la actividad                                  |
+| **PUT**         | /acex/actividades/{id}/folleto          | Subir un folleto (archivo PDF) a la actividad por ID.         | Mensaje de éxito al subir el folleto                               | `200 OK`              | `id` (int) - ID de la actividad, `fichero` (MultipartFile) - Archivo PDF |
+| **GET**         | /acex/actividades/{id}/folleto          | Descargar el folleto asociado a una actividad por ID.         | Archivo PDF del folleto                                           | `200 OK`              | `id` (int) - ID de la actividad                                  |
+
+# Endpoints de la API - ContratoController
+
+| **Método HTTP** | **Endpoint**                            | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|-----------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/contratos                         | Obtiene todos los contratos.                                 | Lista de contratos                                               | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/contratos/{id}                    | Obtiene un contrato específico por ID.                        | Contrato específico                                               | `200 OK`              | `id` (int) - ID del contrato                                      |
+| **POST**        | /acex/contratos                         | Crea un nuevo contrato.                                       | Contrato recién creado                                            | `201 Created`         | `Contrato` (JSON) - Datos del contrato                             |
+| **PUT**         | /acex/contratos/{id}                    | Actualiza un contrato existente por ID.                       | Contrato actualizado                                              | `200 OK`              | `id` (int) - ID del contrato, `Contrato` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/contratos/{id}                    | Elimina un contrato específico por ID.                        | Mensaje de confirmación de eliminación                             | `200 OK`              | `id` (int) - ID del contrato                                      |
+| **PUT**         | /acex/contratos/{idActividad}/fichero    | Subir un archivo PDF (presupuesto o factura) asociado a un contrato. | Mensaje de éxito al subir el archivo                              | `200 OK`              | `idActividad` (int) - ID de la actividad, `fichero` (MultipartFile) - Archivo PDF, `esPresupuesto` (Boolean) - Indica si es presupuesto o factura |
+| **GET**         | /acex/contratos/{idActividad}/fichero    | Descargar un archivo (presupuesto o factura) de un contrato.  | Archivo PDF del contrato                                          | `200 OK`              | `idActividad` (int) - ID de la actividad, `id` (int) - ID del contrato, `esPresupuesto` (Boolean) - Indica si es presupuesto o factura |
+
+# Endpoints de la API - CursoController
+
+| **Método HTTP** | **Endpoint**                            | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|-----------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/cursos                            | Obtiene todos los cursos.                                    | Lista de cursos                                                  | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/cursos/{id}                       | Obtiene un curso específico por ID.                           | Curso específico                                                 | `200 OK`              | `id` (int) - ID del curso                                         |
+| **POST**        | /acex/cursos                            | Crea un nuevo curso.                                         | Curso recién creado                                              | `201 Created`         | `Curso` (JSON) - Datos del curso                                  |
+| **PUT**         | /acex/cursos/{id}                       | Actualiza un curso existente por ID.                          | Curso actualizado                                                | `200 OK`              | `id` (int) - ID del curso, `Curso` (JSON) - Datos a actualizar    |
+| **DELETE**      | /acex/cursos/{id}                       | Elimina un curso específico por ID.                           | Mensaje de confirmación de eliminación                            | `200 OK`              | `id` (int) - ID del curso                                         |
+
+# Endpoints de la API - DepartamentoController
+
+| **Método HTTP** | **Endpoint**                            | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|-----------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/departamentos                     | Obtiene todos los departamentos.                              | Lista de departamentos                                           | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/departamentos/{id}                | Obtiene un departamento específico por ID.                    | Departamento específico                                          | `200 OK`              | `id` (int) - ID del departamento                                  |
+| **POST**        | /acex/departamentos                     | Crea un nuevo departamento.                                  | Departamento recién creado                                       | `201 Created`         | `Departamento` (JSON) - Datos del departamento                     |
+| **PUT**         | /acex/departamentos/{id}                | Actualiza un departamento existente por ID.                   | Departamento actualizado                                         | `200 OK`              | `id` (int) - ID del departamento, `Departamento` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/departamentos/{id}                | Elimina un departamento específico por ID.                    | Mensaje de confirmación de eliminación                            | `200 OK`              | `id` (int) - ID del departamento                                  |
+
+# Endpoints de la API - EmpTransporteController
+
+| **Método HTTP** | **Endpoint**                            | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|-----------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/transportes                       | Obtiene todos los transportes.                                | Lista de transportes                                             | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/transportes/{id}                  | Obtiene un transporte específico por ID.                       | Transporte específico                                            | `200 OK`              | `id` (int) - ID del transporte                                    |
+| **POST**        | /acex/transportes                       | Crea un nuevo transporte.                                     | Transporte recién creado                                         | `201 Created`         | `EmpTransporte` (JSON) - Datos del transporte                      |
+| **PUT**         | /acex/transportes/{id}                  | Actualiza un transporte existente por ID.                      | Transporte actualizado                                           | `200 OK`              | `id` (int) - ID del transporte, `EmpTransporte` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/transportes/{id}                  | Elimina un transporte específico por ID.                       | Mensaje de confirmación de eliminación                            | `200 OK`              | `id` (int) - ID del transporte                                    |
+
+# Endpoints de la API - FotoController
+
+| **Método HTTP** | **Endpoint**                                | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|---------------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/fotos                                 | Obtiene todas las fotos.                                      | Lista de fotos                                                   | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/fotos/{id}                            | Obtiene una foto específica por ID.                           | Foto específica                                                  | `200 OK`              | `id` (int) - ID de la foto                                        |
+| **GET**         | /acex/fotos/actividad/{idActividad}         | Obtiene fotos asociadas a una actividad.                      | Lista de fotos asociadas a la actividad                           | `200 OK`              | `idActividad` (int) - ID de la actividad                          |
+| **POST**        | /acex/fotos                                 | Crea una nueva foto.                                          | Foto recién creada                                               | `201 Created`         | `Foto` (JSON) - Datos de la foto a crear                          |
+| **PUT**         | /acex/fotos/{id}                            | Actualiza una foto existente por ID.                          | Foto actualizada                                                 | `200 OK`              | `id` (int) - ID de la foto, `Foto` (JSON) - Datos a actualizar    |
+| **DELETE**      | /acex/fotos/{id}                            | Elimina una foto por ID.                                      | Foto eliminada                                                   | `200 OK`              | `id` (int) - ID de la foto                                        |
+| **POST**        | /acex/fotos/{idActividad}/foto              | Guarda una foto asociada a una actividad.                     | Foto subida correctamente                                         | `201 Created`         | `idActividad` (int) - ID de la actividad, `descripcion` (String), `fichero` (MultipartFile) |
+| **GET**         | /acex/fotos/{idActividad}/foto              | Obtiene una foto asociada a una actividad.                    | Foto específica asociada a la actividad                           | `200 OK`              | `idActividad` (int) - ID de la actividad, `id` (int) - ID de la foto |
+
+# Endpoints de la API - GrupoController
+
+| **Método HTTP** | **Endpoint**                                | **Descripción**                                              | **Respuesta Exitosa**                                             | **Código de Estado**  | **Parámetros**                                                    |
+|-----------------|---------------------------------------------|--------------------------------------------------------------|------------------------------------------------------------------|-----------------------|-------------------------------------------------------------------|
+| **GET**         | /acex/grupos                                | Obtiene todos los grupos.                                    | Lista de grupos                                                  | `200 OK`              | Ninguno                                                           |
+| **GET**         | /acex/grupos/{id}                           | Obtiene un grupo específico por ID.                           | Grupo específico                                                  | `200 OK`              | `id` (int) - ID del grupo                                         |
+| **POST**        | /acex/grupos                                | Crea un nuevo grupo.                                          | Grupo recién creado                                               | `201 Created`         | `Grupo` (JSON) - Datos del grupo a crear                          |
+| **PUT**         | /acex/grupos/{id}                           | Actualiza un grupo existente por ID.                          | Grupo actualizado                                                 | `200 OK`              | `id` (int) - ID del grupo, `Grupo` (JSON) - Datos a actualizar    |
+| **DELETE**      | /acex/grupos/{id}                           | Elimina un grupo por ID.                                      | Grupo eliminado                                                   | `200 OK`              | `id` (int) - ID del grupo                                         |
+
+# Endpoints de la API - GrupoParticipanteController
+
+| **Método HTTP** | **Endpoint**                                         | **Descripción**                                                     | **Respuesta Exitosa**                                            | **Código de Estado**   | **Parámetros**                                                   |
+|-----------------|------------------------------------------------------|---------------------------------------------------------------------|------------------------------------------------------------------|------------------------|------------------------------------------------------------------|
+| **GET**         | /acex/gruposParticipantes                            | Obtiene todos los grupos participantes.                             | Lista de grupos participantes                                    | `200 OK`               | Ninguno                                                          |
+| **GET**         | /acex/gruposParticipantes/{id}                       | Obtiene un grupo participante específico por ID.                    | Grupo participante específico                                    | `200 OK`               | `id` (Integer) - ID del grupo participante                       |
+| **GET**         | /acex/gruposParticipantes/actividad/{id}             | Obtiene grupos participantes por ID de actividad.                   | Lista de grupos participantes asociados a la actividad          | `200 OK`               | `id` (Integer) - ID de la actividad                              |
+| **POST**        | /acex/gruposParticipantes                            | Crea un nuevo grupo participante.                                   | Grupo participante recién creado                                 | `201 Created`          | `GrupoParticipante` (JSON) - Datos del grupo participante a crear|
+| **PUT**         | /acex/gruposParticipantes/{id}                       | Actualiza un grupo participante existente por ID.                   | Grupo participante actualizado                                   | `200 OK`               | `id` (Integer) - ID del grupo participante, `GrupoParticipante` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/gruposParticipantes/{id}                       | Elimina un grupo participante por ID.                               | Grupo participante eliminado                                     | `200 OK`               | `id` (Integer) - ID del grupo participante                       |
+
+# Endpoints de la API - ProfesorController
+
+| **Método HTTP** | **Endpoint**                                         | **Descripción**                                                       | **Respuesta Exitosa**                                            | **Código de Estado**   | **Parámetros**                                                   |
+|-----------------|------------------------------------------------------|-----------------------------------------------------------------------|------------------------------------------------------------------|------------------------|------------------------------------------------------------------|
+| **GET**         | /acex/profesores                                     | Obtiene todos los profesores.                                         | Lista de todos los profesores                                     | `200 OK`               | Ninguno                                                          |
+| **GET**         | /acex/profesores/{correo}                            | Obtiene un profesor específico por su correo.                         | Profesor con los detalles del correo especificado                | `200 OK`               | `correo` (String) - Correo del profesor                          |
+| **POST**        | /acex/profesores                                     | Crea un nuevo profesor.                                               | Profesor recién creado                                           | `201 Created`          | `Profesor` (JSON) - Datos del profesor a crear                   |
+| **PUT**         | /acex/profesores/{id}                                | Actualiza un profesor existente por ID.                               | Profesor actualizado                                             | `200 OK`               | `id` (String) - ID del profesor, `Profesor` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/profesores/{id}                                | Elimina un profesor por ID.                                           | Profesor eliminado                                               | `200 OK`               | `id` (String) - ID del profesor                                  |
+| **GET**         | /acex/profesores/inicio                              | Inicia sesión para un profesor con correo y contraseña.              | Profesor con detalles si la autenticación es exitosa             | `200 OK`               | `correo` (String), `password` (String) - Correo y contraseña     |
+| **PUT**         | /acex/profesores/{correo}/foto                       | Guarda una foto para un profesor específico.                          | Mensaje de éxito indicando que la foto fue subida correctamente  | `200 OK`               | `correo` (String) - Correo del profesor, `fichero` (MultipartFile) - Foto del profesor |
+| **GET**         | /acex/profesores/{correo}/foto                       | Obtiene la foto del profesor específico.                              | Foto del profesor en formato imagen                              | `200 OK`               | `correo` (String) - Correo del profesor                          |
+
+# Endpoints de la API - ProfParticipanteController
+
+| **Método HTTP** | **Endpoint**                                               | **Descripción**                                                         | **Respuesta Exitosa**                                             | **Código de Estado**   | **Parámetros**                                                   |
+|-----------------|------------------------------------------------------------|-------------------------------------------------------------------------|-------------------------------------------------------------------|------------------------|------------------------------------------------------------------|
+| **GET**         | /acex/profesoresParticipantes                               | Obtiene todos los participantes de profesores.                          | Lista de todos los participantes de profesores                      | `200 OK`               | Ninguno                                                          |
+| **GET**         | /acex/profesoresParticipantes/{id}                          | Obtiene un participante de profesor por ID.                             | Detalles del participante de profesor con el ID especificado       | `200 OK`               | `id` (Integer) - ID del participante de profesor                 |
+| **GET**         | /acex/profesoresParticipantes/actividad/{id}                | Obtiene los participantes de profesores para una actividad específica. | Lista de participantes de profesores para la actividad con el ID  | `200 OK`               | `id` (Integer) - ID de la actividad                              |
+| **POST**        | /acex/profesoresParticipantes                               | Crea un nuevo participante de profesor.                                 | Participante de profesor creado                                    | `201 Created`          | `ProfParticipante` (JSON) - Datos del participante a crear       |
+| **PUT**         | /acex/profesoresParticipantes/{id}                          | Actualiza un participante de profesor existente por ID.                 | Participante de profesor actualizado                               | `200 OK`               | `id` (Integer) - ID del participante, `ProfParticipante` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/profesoresParticipantes/{id}                          | Elimina un participante de profesor por ID.                             | Participante de profesor eliminado                                 | `200 OK`               | `id` (Integer) - ID del participante de profesor                 |
+
+# Endpoints de la API - ProfResponsableController
+
+| **Método HTTP** | **Endpoint**                                                 | **Descripción**                                                       | **Respuesta Exitosa**                                          | **Código de Estado**   | **Parámetros**                                                   |
+|-----------------|--------------------------------------------------------------|-----------------------------------------------------------------------|----------------------------------------------------------------|------------------------|------------------------------------------------------------------|
+| **GET**         | /acex/profesoresResponsables                                  | Obtiene todos los responsables de profesores.                          | Lista de todos los responsables de profesores                    | `200 OK`               | Ninguno                                                          |
+| **GET**         | /acex/profesoresResponsables/{id}                             | Obtiene un responsable de profesor por ID.                             | Detalles del responsable de profesor con el ID especificado     | `200 OK`               | `id` (Integer) - ID del responsable de profesor                   |
+| **POST**        | /acex/profesoresResponsables                                  | Crea un nuevo responsable de profesor.                                 | Responsable de profesor creado                                  | `201 Created`          | `ProfResponsable` (JSON) - Datos del responsable a crear         |
+| **PUT**         | /acex/profesoresResponsables/{id}                             | Actualiza un responsable de profesor existente por ID.                 | Responsable de profesor actualizado                             | `200 OK`               | `id` (Integer) - ID del responsable, `ProfResponsable` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/profesoresResponsables/{id}                             | Elimina un responsable de profesor por ID.                             | Responsable de profesor eliminado                               | `200 OK`               | `id` (Integer) - ID del responsable de profesor                   |
+
+# Endpoints de la API - PuntoInteresController
+
+| **Método HTTP** | **Endpoint**                                           | **Descripción**                                                       | **Respuesta Exitosa**                                         | **Código de Estado**   | **Parámetros**                                                |
+|-----------------|--------------------------------------------------------|-----------------------------------------------------------------------|--------------------------------------------------------------|------------------------|---------------------------------------------------------------|
+| **GET**         | /acex/puntosinteres                                    | Obtiene todos los puntos de interés.                                  | Lista de todos los puntos de interés                           | `200 OK`               | Ninguno                                                       |
+| **GET**         | /acex/puntosinteres/{id}                               | Obtiene un punto de interés por ID.                                   | Detalles del punto de interés con el ID especificado          | `200 OK`               | `id` (Integer) - ID del punto de interés                       |
+| **POST**        | /acex/puntosinteres                                    | Crea un nuevo punto de interés.                                       | Punto de interés creado                                        | `201 Created`          | `PuntoInteres` (JSON) - Datos del punto de interés a crear    |
+| **PUT**         | /acex/puntosinteres/{id}                               | Actualiza un punto de interés existente por ID.                       | Punto de interés actualizado                                   | `200 OK`               | `id` (Integer) - ID del punto de interés, `PuntoInteres` (JSON) - Datos a actualizar |
+| **DELETE**      | /acex/puntosinteres/{id}                               | Elimina un punto de interés por ID.                                   | Punto de interés eliminado                                     | `200 OK`               | `id` (Integer) - ID del punto de interés                       |
 
 # Servicios🛠️
 
@@ -250,6 +322,8 @@ public class FileUploadUtil {
 ```
 # Conclusión
 
-En ProjectStore hemos implementado varias funcionalidades para la gestión de ficheros y la manipulación de recursos en una aplicación Spring Boot. A través de la creación de controladores y servicios, hemos logrado estructurar y desarrollar una API que nos permite manejar todos los datos 
+En ProjectStore hemos implementado varias funcionalidades para la gestión de ficheros y la manipulación de recursos en una aplicación Spring Boot. A través de la creación de controladores y servicios, hemos logrado estructurar y desarrollar una API que nos permite manejar todos los datos
+de los proyectos de IES MIGUEL HERRERO, y como siempre hay margen de mejora pero estaremos encantados de traerles nuevas mejoras
+contacten con nosotros para continuar ayudandoles. Muchas gracias😄🔥.
 de los proyectos de IES MIGUEL HERRERO, y como siempre hay margen de mejora pero estaremos encantados de traerles nuevas mejoras
 contacten con nosotros para continuar ayudandoles. Muchas gracias.
