@@ -252,4 +252,4 @@ public class FileUploadUtil {
 
 En ProjectStore hemos implementado varias funcionalidades para la gestión de ficheros y la manipulación de recursos en una aplicación Spring Boot. A través de la creación de controladores y servicios, hemos logrado estructurar y desarrollar una API que nos permite manejar todos los datos 
 de los proyectos de IES MIGUEL HERRERO, y como siempre hay margen de mejora pero estaremos encantados de traerles nuevas mejoras
-contacten con nosotros para continuar ayudandoles. Muchas gracias😄🔥.
+contacten con nosotros para continuar ayudandoles. Muchas gracias.
