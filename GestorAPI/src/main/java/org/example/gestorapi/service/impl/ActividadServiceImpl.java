@@ -96,6 +96,17 @@ public class ActividadServiceImpl implements ActividadService {
             cell.setCellValue(actividad.getTitulo());
 
 
+            //EXPLICACCION
+            row = sheet.getRow(20);
+            cell = row.getCell(3);
+            cell.setCellValue(actividad.getDescripcion());
+
+
+            //OBSERVACION
+            row = sheet.getRow(27);
+            cell = row.getCell(3);
+            cell.setCellValue(actividad.getComentarios());
+
             try (FileOutputStream fos = new FileOutputStream(new File(tmpdir + "/autorizacion.xlsx"))) {
                 workbook.write(fos);
             }
