@@ -73,9 +73,11 @@ Este proyecto sigue una estructura organizada en paquetes que representan las ca
 ```plaintext
 src/main/java
 └── com.example.gestorapi
-    ├── controller      # Controladores (Contiene los controladores que definen los endpoints de la API.)
-    ├── model           # Clases de modelo y enums (Incluye las entidades que representan tablas de la base de datos.)
-    ├── repository      # Repositorios (Define las interfaces para interactuar con la base de datos mediante JPA.)
+    ├── controller      # Controladores (Contiene los controladores que definen los endpoints de la API)
+    ├── model           # Clases de modelo y enums (Incluye las entidades que representan tablas de la base de datos)
+    ├── repository      # Repositorios (Define las interfaces para interactuar con la base de datos mediante JPA)
+    ├── security        # Clases relacionadas con la seguridad de la API (Solo está en las ramas que lo implementen)
+        └── DTO         # Guarda clases DTO (Solo está en las ramas que lo implementen)
     └── service         # Servicios (subida de ficheros)
         ├── files       # Clase para subir archivos
         └── impl        # Las clases impl de los servicios
