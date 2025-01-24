@@ -2,15 +2,15 @@
 
 http://localhost:8080/swagger-ui/index.html
 
-# 🔥Documentación de la API - Equipo A2🔥
+# Documentación de la API - Equipo A2
 
-## Realizado por el Equipo 2🏅
+## Realizado por el Equipo 2
 * Raúl Casas Gómez
 * Francisco Sitjar de Cos-Estrada
 * Paula Díaz Santos
 * Raúl Buenaga
 
-## Tabla de contenidos📝
+## Tabla de contenidos
 
 1. [Introducción](#introducción)
 2. [Configuración](#configuración)
@@ -21,16 +21,16 @@ http://localhost:8080/swagger-ui/index.html
 7. [Servicios (Services)](#servicios)
 8. [Conclusión](#conclusión)
 
-## Introducción🚀
+## Introducción
 
 Esta API esta basada en la Base De Datos de Proyectos, en la cual está creada para el guardado y el procesado de los 
 proyectos realizados por el alumnado del instituto IES MIGUEL HERRERO, para su consulta y su gestión.
 
-## Configuración⚙️
+## Configuración
 
 Esta sección describe los ajustes necesarios en el archivo de configuración de la ProjectStore para que funcione correctamente. Los parámetros están definidos en el archivo `application.properties`.
 
-### Propiedades principales🍃
+### Propiedades principales
 
 A continuación, se muestran las propiedades utilizadas en la API ProjectStore:
 
@@ -64,41 +64,47 @@ spring.servlet.multipart.max-file-size=50GB
 # Tamaño máximo permitido por solicitud
 spring.servlet.multipart.max-request-size=50GB 
 ```
-## Estructura de ProjectStore🏗️
+## Estructura de la API
 
 Este proyecto sigue una estructura organizada en paquetes que representan las capas principales de la arquitectura.
 
-### Estructura de Carpetas📁
+### Estructura de Carpetas
 
 ```plaintext
 src/main/java
-└── com.proyectos.proyectosapi
+└── com.example.gestorapi
     ├── controller      # Controladores (Contiene los controladores que definen los endpoints de la API.)
     ├── model           # Clases de modelo y enums (Incluye las entidades que representan tablas de la base de datos.)
     ├── repository      # Repositorios (Define las interfaces para interactuar con la base de datos mediante JPA.)
     └── service         # Servicios (subida de ficheros)
+        ├── files       # Clase para subir archivos
+        └── impl        # Las clases impl de los servicios
+```
+```
 ```
 
-## Modelos (Entities)📚
+## Modelos (Entities)
 
 Los modelos en esta API de ProjectStore representan las entidades principales del sistema y su mapeo a la base de datos. Cada clase dentro del paquete `model` utiliza anotaciones de JPA (Java Persistence API) para definir su estructura, relaciones y comportamiento en la base de datos.
 
 ### Principales entidades del proyecto
 
-1. **Alumno**: Representa a un estudiante registrado en el sistema.
-2. **Ciclo**: Representa un ciclo formativo con sus características.
-3. **Proyecto**: Representa un proyecto realizado por uno o más alumnos.
-4. **Profesor**: Representa a un profesor asociado con la evaluación de proyectos.
-5. **Realiza**: Relación entre alumnos y proyectos que indica qué alumnos realizan qué proyectos.
-6. **Evalua**: Relación entre profesores y proyectos, indicando evaluaciones realizadas.
+1. **Actividades**: Representa una actividad registrada en el sistema.
+2. **Contratos**: Guarda la actividad, tranposrte e información basica del contrato.
+3. **Cursos**: Representa los cursos de los que se disponen en el instituto.
+4. **Emp_transporte**: Representa las empresas transporte que se han contratado para realizar alguna actividad.
+5. **Fotos**: Guarda la informacion necesaria para acceder a las fotos y a que actividad pertenecen.
+6. **Grupos**: Representa el grupo, guardando el curso al que pertenecen, su tutor y si aun existe.
+7. **Profesores**: Representa un profesor y toda su informacion relevante como email, nombre y apellidos, su contraseña (encriptada), etc...
+8. **Users**: (Tabla creada e implementada para aumentar la seguridad de la API, solo la utilizan las ramas relacionadas con la seguridad) Guarda la informacion para saber quien esta accediendo a la API.
 
-Además, se utilizan los **Enums** para valores constantes como género, familia profesional, o etapa educativa.
+Además, se utilizan los **Enums** para valores constantes como etapa, rol, estado,...
 
-## Repositorios (Repositories)📦
+## Repositorios (Repositories)
 
 Los repositorios en esta API representan la capa de acceso a datos. 
 
-### Principales Repositorios📦
+### Principales Repositorios
 
 | Repositorio            | Entidad asociada | Descripción                                              |
 |------------------------|------------------|----------------------------------------------------------|
@@ -111,7 +117,7 @@ Los repositorios en esta API representan la capa de acceso a datos.
 
 ---
 
-### Ejemplo de Repositorio: `AlumnoRepository`👨‍🎓
+### Ejemplo de Repositorio: `AlumnoRepository`
 
 El repositorio `AlumnoRepository` permite acceder y manipular los datos de los alumnos. 
 
@@ -123,13 +129,13 @@ El repositorio `AlumnoRepository` permite acceder y manipular los datos de los a
 - `update(Alumno alumno)`: Actualiza un alumno.
 - `delete(Alumno alumno)`: Elimina un alumno.
 
-# Controladores (EndPoints)📍
+# Controladores (EndPoints)
 
 En esta sección se detallan los controladores de la API, los cuales son responsables de manejar las solicitudes HTTP entrantes y devolver las respuestas adecuadas. Cada controlador está vinculado a una ruta específica y proporciona diferentes operaciones sobre los recursos de la aplicación.
 
 A continuación, se describe el controlador `AlumnoController`, presentando un resumen  de todos los endpoints disponibles en este controlador.
 
-# Endpoints de ProjectStore - AlumnoController🌐
+# Endpoints de ProjectStore - AlumnoController
 
 | **Método HTTP** | **Endpoint**              | **Descripción**                                      | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                       |
 |-----------------|---------------------------|------------------------------------------------------|-----------------------|----------------------|--------------------------------------|
@@ -140,7 +146,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | `PUT`           | `/alumnos/{idalumno}`     | Actualiza un alumno existente.                       | Alumno actualizado     | `200 OK`             | `idalumno` (string), Cuerpo JSON con los datos a actualizar |
 | `DELETE`        | `/alumnos/{idAlumno}`     | Elimina un alumno por su ID. 
 
-# Endpoints de ProjectStore - CicloController🌐
+# Endpoints de ProjectStore - CicloController
 
 | **Método HTTP** | **Endpoint**                  | **Descripción**                                    | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                          |
 |-----------------|-------------------------------|----------------------------------------------------|-----------------------|----------------------|-----------------------------------------|
@@ -148,7 +154,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | `GET`           | `/ciclos/codciclo/{codciclo}`  | Obtiene un ciclo por su código.                    | Detalles del ciclo     | `200 OK`             | `codciclo` (string)                     |
 | `GET`           | `/ciclos/etapa/{etapa}`        | Obtiene ciclos según su etapa.                     | Lista de ciclos        | `200 OK`             | `etapa` (enum de tipo `Etapa`)          |
 
-# Endpoints de ProjectStore - EvaluaController🌐
+# Endpoints de ProjectStore - EvaluaController
 
 | **Método HTTP** | **Endpoint**                       | **Descripción**                                     | **Respuesta Exitosa** | **Código de Estado** | **Parámetros**                           |
 |-----------------|------------------------------------|-----------------------------------------------------|-----------------------|----------------------|------------------------------------------|
@@ -160,7 +166,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | `PUT`           | `/evaluan/{id}`                    | Actualiza una evaluación existente.                 | Evaluación actualizada | `200 OK`             | `id` (int), Cuerpo JSON con los datos a actualizar |
 | `DELETE`        | `/evaluan/{id}`                    | Elimina una evaluación por su ID.                   | Sin contenido           | `204 No Content`     | `id` (int)                               |
 
-# Endpoints de ProjectStore - ProfesorController🌐
+# Endpoints de ProjectStore - ProfesorController
 
 | **Método HTTP** | **Endpoint**                        | **Descripción**                                      | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
 |-----------------|-------------------------------------|------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
@@ -173,7 +179,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | `PUT`           | `/profesores/{idprofesor}`          | Actualiza un profesor existente.                     | Profesor actualizado    | `200 OK`             | `idprofesor` (string), Cuerpo JSON con los datos a actualizar |
 | `DELETE`        | `/profesores/{idProfesor}`          | Elimina un profesor por su ID.                       | Sin contenido           | `204 No Content`     | `idProfesor` (string)                        |
 
-# Endpoints de ProjectStore - ProyectoController🌐
+# Endpoints de ProjectStore - ProyectoController
 
 | **Método HTTP** | **Endpoint**                             | **Descripción**                                       | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
 |-----------------|------------------------------------------|-------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
@@ -188,7 +194,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | `GET`           | `/proyectos/ficheros`                    | Obtiene un archivo asociado a un proyecto (logo, memoria, archivos). | Archivo solicitado       | `200 OK`             | `idProyecto` (int), `tipo` (string: logo, memoria, archivos) |
 
 
-# Endpoints de ProjectStore - RealizaController🌐
+# Endpoints de ProjectStore - RealizaController
 
 | **Método HTTP** | **Endpoint**                             | **Descripción**                                       | **Respuesta Exitosa**  | **Código de Estado** | **Parámetros**                               |
 |-----------------|------------------------------------------|-------------------------------------------------------|------------------------|----------------------|----------------------------------------------|
@@ -204,11 +210,11 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 
 Este apartado describe el servicio encargado de manejar la subida de ficheros dentro de la API. Se utiliza la clase `FileUploadUtil`, la cual contiene un método para guardar ficheros en el servidor.
 
-## Clase `FileUploadUtil` - Subida de Ficheros📤
+## Clase `FileUploadUtil` - Subida de Ficheros
 
 Esta clase se encarga de manejar la subida de ficheros a un directorio específico en el servidor. El siguiente código muestra la implementación de la clase `FileUploadUtil` y cómo usarla para guardar un fichero.
 
-### Código de la clase `FileUploadUtil`☕️
+### Código de la clase `FileUploadUtil`
 
 ```java
 
@@ -237,7 +243,7 @@ public class FileUploadUtil {
     }
 }
 ```
-# Conclusión🚩
+# Conclusión
 
 En ProjectStore hemos implementado varias funcionalidades para la gestión de ficheros y la manipulación de recursos en una aplicación Spring Boot. A través de la creación de controladores y servicios, hemos logrado estructurar y desarrollar una API que nos permite manejar todos los datos 
 de los proyectos de IES MIGUEL HERRERO, y como siempre hay margen de mejora pero estaremos encantados de traerles nuevas mejoras
