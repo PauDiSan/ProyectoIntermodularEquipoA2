@@ -12,14 +12,15 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Tabla de contenidos
 
-1. [Introducción](#introducción)
+1. [Introducción](#Introducción)
 2. [Configuración](#configuración)
-3. [Estructura de ProjectStore](#estructura-de-projectstore)
-4. [Modelos (Entities)](#modelos-entities)
-5. [Repositorios (Repositories)](#repositorios-repositories)
-6. [Controladores (EndPoints)](#controladores-endpoints)
-7. [Servicios (Services)](#servicios)
-8. [Conclusión](#conclusión)
+3. [Estructura de la API](#estructura-de-la-api)
+4. [Estructura de Carpetas](#estructura-de-carpetas)
+5. [Modelos (Entities)](#modelos-entities)
+6. [Repositorios (Repositories)](#repositorios-repositories)
+7. [Controladores (EndPoints)](#controladores-endpoints)
+8. [Servicios (Services)](#servicios)
+9. [Conclusión](#conclusión)
 
 ## Introducción
 
@@ -28,41 +29,25 @@ proyectos realizados por el alumnado del instituto IES MIGUEL HERRERO, para su c
 
 ## Configuración
 
-Esta sección describe los ajustes necesarios en el archivo de configuración de la ProjectStore para que funcione correctamente. Los parámetros están definidos en el archivo `application.properties`.
+Esta sección describe los ajustes necesarios en el archivo de configuración de la API para que funcione correctamente. Los parámetros están definidos en el archivo `application.properties`.
 
 ### Propiedades principales
 
-A continuación, se muestran las propiedades utilizadas en la API ProjectStore:
+A continuación, se muestran las propiedades utilizadas en la API:
 
 ```properties
-# Nombre de la aplicación
-spring.application.name=proyectosapi
-
-# Configuración de la base de datos
-spring.datasource.url=jdbc:mysql://localhost:3307/proyectos
-spring.datasource.username=root
-spring.datasource.password=
+spring.application.name=GestorAPI
+spring.datasource.url=jdbc:mysql://10.0.22.5:3306/acex
+spring.datasource.username=admin
+spring.datasource.password=mysql
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-# Puerto en el que se ejecutará la aplicación
-server.port=4000
-
-# Prefijo para los endpoints (URL base)
-server.servlet.context-path=/
-
-# Configuración de OpenAPI y Swagger
-# Habilita la generación de documentación de la API
-springdoc.api-docs.enabled=true 
-# Personaliza la URL de Swagger UI        
-springdoc.swagger-ui.path=/swagger-ui.html 
-
-# Configuración de archivos subidos
-# Habilita la subida de archivos
-spring.servlet.multipart.enabled=true 
-# Tamaño máximo permitido por archivo         
-spring.servlet.multipart.max-file-size=50GB    
-# Tamaño máximo permitido por solicitud
-spring.servlet.multipart.max-request-size=50GB 
+spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
+spring.jpa.hibernate.ddl-auto=none
+spring.jpa.show-sql=true
+spring.servlet.multipart.enabled=true
+spring.servlet.multipart.max-file-size=500MB
+spring.servlet.multipart.max-request-size=500MB
+springdoc.api-docs.enabled=true
 ```
 ## Estructura de la API
 
@@ -87,7 +72,7 @@ src/main/java
 
 ## Modelos (Entities)
 
-Los modelos en esta API de ProjectStore representan las entidades principales del sistema y su mapeo a la base de datos. Cada clase dentro del paquete `model` utiliza anotaciones de JPA (Java Persistence API) para definir su estructura, relaciones y comportamiento en la base de datos.
+Los modelos de la API representan las entidades en la base de datos. Utilizando JPA para definir como interactuan entre ellos en la base de datos.
 
 ### Principales entidades del proyecto
 
@@ -129,26 +114,22 @@ El repositorio de JPA `ProfesorRepository` permite tener consultas prediseñadas
 - `Profesor findByCorreo(String correo)`: Método para encontrar el profesor por correo.
 
 ## Service
-Los services en esta API representan la capa de acceso a datos
+Los services en esta API representan la capa de acceso a datos, donde se controlan las interacciones que se podran tener con las entidades en la base de datos.
 
- Service                   | Entidad asociada | Descripción                                              |
-|---------------------------|------------------|----------------------------------------------------------|
-| `ActividadService`        | `Actividad`      | Maneja las consultas relacionadas con alumnos. |
-| `ContratoService`      | `Ciclo`          | Proporciona acceso a los ciclos formativos.              |
-| `CursoService`         | `Curso`          | Gestiona los datos de los proyectos.                     |
-| `DepartamentoService`  | `Departamento`   | Acceso y manipulación de datos relacionados con los profesores. |
-| `EmpTransporteService` | `EmpTransporte`  | Relación entre alumnos y proyectos.                      |
-| `FotoService`          | `Fotos`          | Relación entre profesores y proyectos evaluados.         |
-| `ProfesorService`      | `Profesor`       | Relación entre profesores y proyectos evaluados.         |
+ Service                    | Entidad asociada | 
+|---------------------------|------------------|
+| `ActividadService`        | `Actividad`      | 
+| `ContratoService`         | `Contrato`       |
+| `CursoService`            | `Curso`          | 
+| `DepartamentoService`     | `Departamento`   | 
+| `EmpTransporteService`    | `EmpTransporte`  | 
+| `FotoService`             | `Fotos`          | 
+| `ProfesorService`         | `Profesor`       |
 
 
 # Controladores (EndPoints)
 
 En esta sección se detallan los controladores de la API, los cuales son responsables de manejar las solicitudes HTTP entrantes y devolver las respuestas adecuadas. Cada controlador está vinculado a una ruta específica y proporciona diferentes operaciones sobre los recursos de la aplicación.
-
-A continuación, se describe el controlador `AlumnoController`, presentando un resumen  de todos los endpoints disponibles en este controlador.
-
-
 
 # Endpoints de la API - ActividadController
 
@@ -283,7 +264,7 @@ A continuación, se describe el controlador `AlumnoController`, presentando un r
 | **PUT**         | /acex/puntosinteres/{id}                               | Actualiza un punto de interés existente por ID.                       | Punto de interés actualizado                                   | `200 OK`               | `id` (Integer) - ID del punto de interés, `PuntoInteres` (JSON) - Datos a actualizar |
 | **DELETE**      | /acex/puntosinteres/{id}                               | Elimina un punto de interés por ID.                                   | Punto de interés eliminado                                     | `200 OK`               | `id` (Integer) - ID del punto de interés                       |
 
-# Servicios🛠️
+# Servicios
 
 Este apartado describe el servicio encargado de manejar la subida de ficheros dentro de la API. Se utiliza la clase `FileUploadUtil`, la cual contiene un método para guardar ficheros en el servidor.
 
@@ -320,6 +301,116 @@ public class FileUploadUtil {
     }
 }
 ```
+
+## Excels de autorización
+Para subir excels se ha implementado en la en la clase `ActividadServiceImpl` un metodo que recibe una actividad y rellena la plantilla de la autorización con los datos de esa actividad.
+Luego, en la clase `ActividadController`, se implementa ese servicio, donde recibo el id de una actividad y la busco, enviandola al metodo. Se crea un archivo temporal en la carpeta `Temp`, donde se crea el excel para luego poder enviar y descargarlo.
+
+
+## Código en `ActividadServiceImpl`
+
+```java
+    public void excel(Actividad actividad) {
+        String rutaArchivo = "plantilla autorizacion.xlsx";
+        String tmpdir = System.getProperty("java.io.tmpdir");
+        try (FileInputStream fis = new FileInputStream(new File(rutaArchivo))) {
+            Workbook workbook = new XSSFWorkbook(fis);
+
+            // Obtener la hoja del archivo (0 es la primera hoja)
+            Sheet sheet = workbook.getSheetAt(0);
+
+            // Obtener la fila (índice de fila 1 es la segunda fila, ya que la numeración empieza en 0)
+            Row row = sheet.getRow(10); // Fila 2 (índice 1)
+
+            // Obtener la celda en la columna 2 (índice 2)
+            Cell cell = row.getCell(9); // Columna C (índice 2)
+            cell.setCellValue(actividad.getImportePorAlumno().doubleValue());
+
+            //FEHCA
+            row = sheet.getRow(13);
+            cell = row.getCell(9);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            cell.setCellValue(actividad.getFini().format(formatter));
+
+            //HORA SALIDA
+            row = sheet.getRow(15);
+            cell = row.getCell(9);
+            cell.setCellValue(actividad.getHini().getHour() + ":" + actividad.getHini().getMinute());
+
+            //HORA LLEGADA
+            row = sheet.getRow(15);
+            cell = row.getCell(25);
+            cell.setCellValue(actividad.getHfin().getHour() + ":" + actividad.getHfin().getMinute());
+
+            //TITULO
+            row = sheet.getRow(5);
+            cell = row.getCell(4);
+            cell.setCellValue(actividad.getTitulo());
+
+
+            //EXPLICACCION
+            row = sheet.getRow(20);
+            cell = row.getCell(3);
+            cell.setCellValue(actividad.getDescripcion());
+
+
+            //OBSERVACION
+            row = sheet.getRow(27);
+            cell = row.getCell(3);
+            cell.setCellValue(actividad.getComentarios());
+
+            try (FileOutputStream fos = new FileOutputStream(new File(tmpdir + "/autorizacion.xlsx"))) {
+                workbook.write(fos);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+```
+
+## ENDPOINT en `ActividadController`
+
+```java
+
+@GetMapping("/actividades/excel")
+    public ResponseEntity<Resource> downloadExcel(@RequestParam("actividad") int actividad) {
+        try {
+            actividadService.excel(actividadService.findById(actividad));
+            String filename = "autorizacion.xlsx";
+            String tmpdir = System.getProperty("java.io.tmpdir");
+            // Definir la ruta del archivo
+            Path filePath = Paths.get(tmpdir + filename);
+            File file = filePath.toFile();
+
+            // Verificar si el archivo existe
+            if (!file.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            // Crear un InputStreamResource a partir del archivo
+            FileInputStream fileInputStream = new FileInputStream(file);
+            InputStreamResource resource = new InputStreamResource(fileInputStream);
+
+            // Retornar el archivo con los encabezados adecuados
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename) // Hacerlo descargable
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM) // Tipo de contenido binario
+                    .body(resource); // Usar InputStreamResource para la respuesta
+
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Manejo de error
+        }
+    }
+        
+´´´
+
+
+
+
+
+
 # Conclusión
 
 En ProjectStore hemos implementado varias funcionalidades para la gestión de ficheros y la manipulación de recursos en una aplicación Spring Boot. A través de la creación de controladores y servicios, hemos logrado estructurar y desarrollar una API que nos permite manejar todos los datos
