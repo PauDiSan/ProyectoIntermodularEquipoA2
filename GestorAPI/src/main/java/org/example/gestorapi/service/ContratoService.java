@@ -12,5 +12,6 @@ public interface ContratoService {
     Contrato guardar(Contrato contrato);
     Contrato actualizar(Contrato nuevo, Integer id);
     Contrato eliminar(Integer id);
+    List<Contrato> contratosByActividadId(Integer id);
 
 }

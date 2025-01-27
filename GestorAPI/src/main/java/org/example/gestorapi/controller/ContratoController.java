@@ -35,11 +35,11 @@ public class ContratoController {
 
     @GetMapping("/contratos")
     public ResponseEntity<?> getContratoes() {
-        List<Contrato> contratoes = contratoService.findAll();
-        if (contratoes.isEmpty()) {
+        List<Contrato> contratos = contratoService.findAll();
+        if (contratos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }else{
-            return ResponseEntity.ok(contratoes);
+            return ResponseEntity.ok(contratos);
         }
     }
 
@@ -50,6 +50,16 @@ public class ContratoController {
             return ResponseEntity.notFound().build();
         }else{
             return ResponseEntity.ok(contrato);
+        }
+    }
+
+    @GetMapping("contratos/actividad/{idActividad}")
+    public ResponseEntity<?> getContratosActividad(@PathVariable int idActividad) {
+        List<Contrato> contratos = contratoService.contratosByActividadId(idActividad);
+        if (contratos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(contratos);
         }
     }
 
@@ -151,6 +161,9 @@ public class ContratoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+
     @GetMapping("/contratos/{idActividad}/fichero")
     public ResponseEntity<Resource> getFolletoActividad(@PathVariable("idActividad") Integer idActividad,
                                                         @RequestParam("id") Integer id,

@@ -50,4 +50,12 @@ public class ContratoServiceImpl implements ContratoService {
             return null;
         }
     }
+
+    @Override
+    public List<Contrato> contratosByActividadId(Integer id){
+        return contratoRepository.findContratoByActividadId(id);
+
+    }
+
+
 }
