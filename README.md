@@ -404,7 +404,7 @@ Luego, en la clase `ActividadController`, se implementa ese servicio, donde reci
         }
     }
         
-´´´
+```
 
 
 
