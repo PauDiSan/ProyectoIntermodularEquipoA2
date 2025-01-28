@@ -20,7 +20,8 @@ http://localhost:8080/swagger-ui/index.html
 6. [Repositorios (Repositories)](#repositorios-repositories)
 7. [Controladores (EndPoints)](#controladores-endpoints)
 8. [Servicios (Services)](#servicios)
-9. [Conclusión](#conclusión)
+9. [Seguridad](#seguridad)
+10. [Conclusión](#conclusión)
 
 ## Introducción
 
@@ -474,7 +475,16 @@ Luego, en la clase `ActividadController`, se implementa ese servicio, donde reci
         
 ```
 
-# Conclusión
+## Seguridad
+
+Para agregar seguridad hemos utilizado un sistema de autenticación basado en JWT. Utiliza la clase `AuthenticationService` para gestionar el registro y la autenticación de usuarios, con los ENDPOINTS /auth/signup y /auth/login permiten agregar usuarios nuevos y iniciar sesion con estos, mientras que el `JwtService` maneja la creación y validación de tokens JWT, comprobando que el token no ha expirado y el usuario es valido. Además, se ha configurado un filtro `JwtAuthenticationFilter` para interceptar las solicitudes y verificar el token JWT en las cabeceras. Finalmente, la configuración de seguridad `SecurityConfiguration` asegura que las rutas de autenticación sean públicas y que todas las demás solicitudes sean autenticadas.
+
+![image](https://github.com/user-attachments/assets/7d79a997-932e-46dd-bf04-84c545adf306)
+
+
+
+
+## Conclusión
 
 En resumen, la API de ACEX, se encarga de gestionar datos, ficheros e incluso puede llegar a implementar seguridad para que sea fácil de llamar y segura, además de tener funciones para generar excel, con una estructura fácil de entender para cualquier programador y optima para la gestión de actividades extraescolares.
 
