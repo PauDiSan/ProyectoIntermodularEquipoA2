@@ -50,7 +50,7 @@ springdoc.api-docs.enabled=true
 ```
 ## Estructura de la API
 
-Este proyecto sigue una estructura organizada en paquetes que representan las capas principales de la arquitectura.
+Este proyecto sigue una estructura organizada en paquetes que representan las capas principales de la arquitectura. Teniendo la base de datos utilizada dentro de la carpeta de BaseDeDatos.
 
 ### Estructura de Carpetas
 
@@ -303,6 +303,9 @@ public class FileUploadUtil {
 
 
 ## ENDPOINT en `FotoController`
+
+Este codigo crea una foto, y la guarda en la carpeta de la actividad correspondiente por su id, y descripcion, separado por guiones bajos.
+
 ```java
 
     @PostMapping("/fotos/{idActividad}/foto")
