@@ -2,7 +2,7 @@
 
 http://localhost:8080/swagger-ui/index.html
 
-# Documentación de la API - Equipo A2
+# Documentación de la API - ACEX 
 
 ## Realizado por el Equipo 2
 * Raúl Casas Gómez
@@ -24,12 +24,11 @@ http://localhost:8080/swagger-ui/index.html
 
 ## Introducción
 
-Esta API esta basada en la Base De Datos de Proyectos, en la cual está creada para el guardado y el procesado de los
-proyectos realizados por el alumnado del instituto IES MIGUEL HERRERO, para su consulta y su gestión.
+Esta API de *Spring Boot JPA* esta basada en la Base De Datos de Acex, la cual esta creada para poder gestionar toda actividad **extraescolar** del centro y asi poder guardar toda la información sobre ellas
 
 ## Configuración
 
-Esta sección describe los ajustes necesarios en el archivo de configuración de la API para que funcione correctamente. Los parámetros están definidos en el archivo `application.properties`.
+Esta sección describe los ajustes necesarios en el archivo de configuración de ACEX para que funcione correctamente. Los parámetros están definidos en el archivo `application.properties`.
 
 ### Propiedades principales
 
@@ -63,7 +62,7 @@ src/main/java
     ├── repository      # Repositorios (Define las interfaces para interactuar con la base de datos mediante JPA)
     ├── security        # Clases relacionadas con la seguridad de la API (Solo está en las ramas que lo implementen)
         └── DTO         # Guarda clases DTO (Solo está en las ramas que lo implementen)
-    └── service         # Servicios (subida de ficheros)
+    └── service         # Servicios (Clases para gestionar la funcionalidad de la api de cada clase)
         ├── files       # Clase para subir archivos
         └── impl        # Las clases impl de los servicios
 ```
@@ -302,6 +301,72 @@ public class FileUploadUtil {
 }
 ```
 
+
+## ENDPOINT en `FotoController`
+```java
+
+    @PostMapping("/fotos/{idActividad}/foto")
+    public ResponseEntity<Foto> guardarFotoActividad(@PathVariable("idActividad") int idActividad,
+                                                          @RequestParam("descripcion") String descripcion,
+                                                          @RequestParam("fichero") MultipartFile multipartFile) {
+
+        // Verificación de que el archivo no está vacío
+        if (multipartFile.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        // Limpia el nombre del archivo
+        String nombreArchivo = StringUtils.cleanPath(Objects.requireNonNull(multipartFile.getOriginalFilename()));
+
+
+        Actividad actividad = actividadService.findById(idActividad);
+        if(actividad != null) {
+
+
+            // Directorio donde se almacenará el archivo
+            String uploadDir = "actividades/" + idActividad + "_" + actividad.getTitulo().replaceAll(" ","_") + "/fotos/";
+
+            // Crear el directorio si no existe
+            File directory = new File(uploadDir);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // Obtener la extensión del archivo
+            String extension = FilenameUtils.getExtension(nombreArchivo).toLowerCase();
+
+            // Validar si el archivo es una imagen o un PDF
+            boolean esImagen = extension.equals("jpg") || extension.equals("jpeg") || extension.equals("png");
+
+            if (!esImagen) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            try {
+                // Guardar el archivo usando un método utilitario (asegúrate de que esta clase esté implementada)
+                FileUploadUtil.guardarFichero(uploadDir, nombreArchivo, multipartFile);
+                Foto foto = new Foto();
+                if (actividadService.findById(idActividad) != null) {
+                    // Actualizar el proyecto según el tipo de archivo
+
+                    foto.setUrlFoto(nombreArchivo);
+                    foto.setDescripcion(descripcion);
+                    foto.setActividad(actividadService.findById(idActividad));
+                    fotoService.guardar(foto);
+                    return ResponseEntity.status(HttpStatus.CREATED).body(foto);
+
+                }
+                return ResponseEntity.status(500).build();
+
+            } catch (IOException e) {
+                return ResponseEntity.status(500).build();
+            }
+        }else{
+            return ResponseEntity.status(500).build();
+        }
+    }
+```
+
 ## Excels de autorización
 Para subir excels se ha implementado en la en la clase `ActividadServiceImpl` un metodo que recibe una actividad y rellena la plantilla de la autorización con los datos de esa actividad.
 Luego, en la clase `ActividadController`, se implementa ese servicio, donde recibo el id de una actividad y la busco, enviandola al metodo. Se crea un archivo temporal en la carpeta `Temp`, donde se crea el excel para luego poder enviar y descargarlo.
@@ -406,11 +471,10 @@ Luego, en la clase `ActividadController`, se implementa ese servicio, donde reci
         
 ```
 
-
-
-
-
-
 # Conclusión
+
+En resumen, la API de ACEX, se encarga de gestionar datos, ficheros e incluso puede llegar a implementar seguridad para que sea fácil de llamar y segura, además de tener funciones para generar excel, con una estructura fácil de entender para cualquier programador y optima para la gestión de actividades extraescolares.
+
+
 
 
