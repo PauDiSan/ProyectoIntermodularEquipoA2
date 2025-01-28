@@ -164,14 +164,14 @@ public class FotoController {
         // Buscar el proyecto por ID
         Foto foto = fotoService.findById(id);
         if (foto == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         // Determinar qué archivo se quiere obtener
         String nombreArchivo = foto.getUrlFoto();
 
         if (nombreArchivo == null || nombreArchivo.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
         try {
@@ -180,7 +180,7 @@ public class FotoController {
             Resource resource = new UrlResource(filePath.toUri());
             // Verificar si el archivo existe y es legible
             if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
             // Configurar los headers para descargar el archivo
@@ -190,7 +190,7 @@ public class FotoController {
                     .body(resource);
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
